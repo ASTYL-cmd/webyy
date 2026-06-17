@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { Zap, Palette, ShoppingCart, Smartphone, Search, Rocket, ArrowUpRight } from 'lucide-react';
 import { services } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -20,26 +19,22 @@ interface ServiceCardProps {
 
 function ServiceCard({ service, index }: ServiceCardProps) {
   const { ref, isVisible } = useScrollReveal();
-  const cardRef = useRef<HTMLDivElement>(null);
   const Icon = iconMap[service.icon];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
     const cx = ((e.clientX - rect.left) / rect.width) * 100;
     const cy = ((e.clientY - rect.top) / rect.height) * 100;
-    cardRef.current.style.setProperty('--cx', cx + '%');
-    cardRef.current.style.setProperty('--cy', cy + '%');
+    ref.current.style.setProperty('--cx', cx + '%');
+    ref.current.style.setProperty('--cy', cy + '%');
   };
 
   const delayClass = index % 3 === 1 ? 'reveal-delay-1' : index % 3 === 2 ? 'reveal-delay-2' : '';
 
   return (
     <div
-      ref={(el) => {
-        ref.current = el;
-        if (el) (cardRef as React.MutableRefObject<HTMLElement | null>).current = el;
-      }}
+      ref={ref}
       onMouseMove={handleMouseMove}
       className={`relative overflow-hidden px-8 md:px-10 py-10 md:py-12 bg-surface border border-border cursor-pointer transition-all duration-400 group card-hover ${
         isVisible ? 'visible' : ''

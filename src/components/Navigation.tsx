@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Instagram, Twitter, Linkedin } from 'lucide-react';
+import { X, Instagram, Twitter, Linkedin } from 'lucide-react';
 import { companyInfo, navigation } from '../config';
 
 export default function Navigation() {
