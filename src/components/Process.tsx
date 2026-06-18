@@ -10,6 +10,41 @@ const iconMap: Record<string, LucideIcon> = {
   Rocket,
 };
 
+interface StepCardProps {
+  step: (typeof processSteps)[0];
+  index: number;
+}
+
+function StepCard({ step, index }: StepCardProps) {
+  const { ref, isVisible } = useScrollReveal();
+  const Icon = iconMap[step.icon];
+  const delayClass =
+    index === 1 ? 'reveal-delay-1' : index === 2 ? 'reveal-delay-2' : index === 3 ? 'reveal-delay-3' : '';
+
+  return (
+    <div
+      ref={ref}
+      className={`relative overflow-hidden px-6 md:px-8 py-10 md:py-12 border border-border transition-all duration-400 process-step-hover hover:bg-surface-2 reveal ${
+        isVisible ? 'visible' : ''
+      } ${delayClass}`}
+    >
+      {/* Step Number */}
+      <div className="text-[3rem] md:text-[4rem] font-black text-white-04 mb-6 tabular-nums">
+        {String(step.step).padStart(2, '0')}
+      </div>
+
+      {/* Icon */}
+      {Icon && <Icon size={28} className="text-blue mb-4" />}
+
+      {/* Title */}
+      <h3 className="text-lg md:text-xl font-bold mb-2">{step.title}</h3>
+
+      {/* Description */}
+      <p className="text-[0.78rem] text-white-60 leading-[1.7]">{step.description}</p>
+    </div>
+  );
+}
+
 export default function Process() {
   const { ref, isVisible } = useScrollReveal();
 
@@ -31,36 +66,9 @@ export default function Process() {
 
         {/* Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
-          {processSteps.map((step, index) => {
-            const { ref: stepRef, isVisible: stepVisible } = useScrollReveal();
-            const Icon = iconMap[step.icon];
-            const delayClass =
-              index === 1 ? 'reveal-delay-1' : index === 2 ? 'reveal-delay-2' : index === 3 ? 'reveal-delay-3' : '';
-
-            return (
-              <div
-                key={step.step}
-                ref={stepRef}
-                className={`relative overflow-hidden px-6 md:px-8 py-10 md:py-12 border border-border transition-all duration-400 process-step-hover hover:bg-surface-2 reveal ${
-                  stepVisible ? 'visible' : ''
-                } ${delayClass}`}
-              >
-                {/* Step Number */}
-                <div className="text-[3rem] md:text-[4rem] font-black text-white-04 mb-6 tabular-nums">
-                  {String(step.step).padStart(2, '0')}
-                </div>
-
-                {/* Icon */}
-                {Icon && <Icon size={28} className="text-blue mb-4" />}
-
-                {/* Title */}
-                <h3 className="text-lg md:text-xl font-bold mb-2">{step.title}</h3>
-
-                {/* Description */}
-                <p className="text-[0.78rem] text-white-60 leading-[1.7]">{step.description}</p>
-              </div>
-            );
-          })}
+          {processSteps.map((step, index) => (
+            <StepCard key={step.step} step={step} index={index} />
+          ))}
         </div>
       </div>
     </section>

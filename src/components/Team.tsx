@@ -2,6 +2,50 @@ import { Linkedin } from 'lucide-react';
 import { team } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
+interface TeamCardProps {
+  member: (typeof team)[0];
+  index: number;
+}
+
+function TeamCard({ member, index }: TeamCardProps) {
+  const { ref, isVisible } = useScrollReveal();
+  const delayClass = index === 1 ? 'reveal-delay-2' : '';
+
+  return (
+    <div
+      ref={ref}
+      className={`relative bg-surface-2 border border-border p-8 md:p-10 transition-all duration-400 group hover:border-blue/30 reveal ${isVisible ? 'visible' : ''} ${delayClass}`}
+    >
+      {/* Avatar */}
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue to-purple flex items-center justify-center text-white text-2xl font-extrabold mb-6 transition-transform duration-300 group-hover:scale-105">
+        {member.avatar}
+      </div>
+
+      {/* Name & Role */}
+      <h3 className="text-xl font-bold tracking-tight mb-1">{member.name}</h3>
+      <div className="text-[0.72rem] tracking-[0.12em] uppercase text-blue mb-4">
+        {member.role}
+      </div>
+
+      {/* Description */}
+      <p className="text-[0.82rem] text-white-60 leading-[1.75] mb-6">
+        {member.description}
+      </p>
+
+      {/* LinkedIn */}
+      <a
+        href={member.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 py-2 px-4 bg-white-04 border border-border rounded-full text-[0.72rem] text-white-60 hover:border-blue hover:text-blue transition-all"
+      >
+        <Linkedin size={13} />
+        Connect on LinkedIn
+      </a>
+    </div>
+  );
+}
+
 export default function Team() {
   const { ref, isVisible } = useScrollReveal();
 
@@ -27,45 +71,9 @@ export default function Team() {
 
         {/* Team Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[1.5px] max-w-3xl">
-          {team.map((member, index) => {
-            const { ref: cardRef, isVisible: cardVisible } = useScrollReveal();
-            const delayClass = index === 1 ? 'reveal-delay-2' : '';
-
-            return (
-              <div
-                key={member.id}
-                ref={cardRef}
-                className={`relative bg-surface-2 border border-border p-8 md:p-10 transition-all duration-400 group hover:border-blue/30 reveal ${cardVisible ? 'visible' : ''} ${delayClass}`}
-              >
-                {/* Avatar */}
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue to-purple flex items-center justify-center text-white text-2xl font-extrabold mb-6 transition-transform duration-300 group-hover:scale-105">
-                  {member.avatar}
-                </div>
-
-                {/* Name & Role */}
-                <h3 className="text-xl font-bold tracking-tight mb-1">{member.name}</h3>
-                <div className="text-[0.72rem] tracking-[0.12em] uppercase text-blue mb-4">
-                  {member.role}
-                </div>
-
-                {/* Description */}
-                <p className="text-[0.82rem] text-white-60 leading-[1.75] mb-6">
-                  {member.description}
-                </p>
-
-                {/* LinkedIn */}
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 py-2 px-4 bg-white-04 border border-border rounded-full text-[0.72rem] text-white-60 hover:border-blue hover:text-blue transition-all"
-                >
-                  <Linkedin size={13} />
-                  Connect on LinkedIn
-                </a>
-              </div>
-            );
-          })}
+          {team.map((member, index) => (
+            <TeamCard key={member.id} member={member} index={index} />
+          ))}
         </div>
       </div>
     </section>
