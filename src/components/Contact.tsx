@@ -7,6 +7,7 @@ import {
   Phone,
   MessageCircle,
   Instagram,
+  Linkedin,
   Check,
 } from 'lucide-react';
 import { companyInfo } from '../config';
@@ -143,6 +144,26 @@ export default function Contact() {
                 </div>
               </a>
 
+              {/* LinkedIn */}
+              <a
+                href={companyInfo.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 group"
+              >
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-glow to-purple-glow border border-border rounded-lg flex items-center justify-center flex-shrink-0 transition-all group-hover:border-blue">
+                  <Linkedin size={18} className="text-blue" />
+                </div>
+                <div>
+                  <div className="text-[0.65rem] text-blue tracking-[0.15em] uppercase mb-1">
+                    LinkedIn
+                  </div>
+                  <div className="text-white group-hover:text-blue transition-colors">
+                    Webyy Studio
+                  </div>
+                </div>
+              </a>
+
               {/* Location */}
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-glow to-purple-glow border border-border rounded-lg flex items-center justify-center flex-shrink-0">
@@ -246,17 +267,23 @@ export default function Contact() {
                     <option value="" className="bg-surface-2">
                       What do you need?
                     </option>
-                    <option value="branding" className="bg-surface-2">
-                      Brand Identity & Strategy
+                    <option value="website-design" className="bg-surface-2">
+                      Website Design
                     </option>
-                    <option value="website" className="bg-surface-2">
-                      Website Design & Development
+                    <option value="website-dev" className="bg-surface-2">
+                      Website Development
                     </option>
-                    <option value="ecommerce" className="bg-surface-2">
-                      E-Commerce Solution
+                    <option value="redesign" className="bg-surface-2">
+                      Website Redesign
                     </option>
-                    <option value="product" className="bg-surface-2">
-                      Product / App Design
+                    <option value="landing" className="bg-surface-2">
+                      Landing Page
+                    </option>
+                    <option value="business" className="bg-surface-2">
+                      Business Website
+                    </option>
+                    <option value="seo" className="bg-surface-2">
+                      SEO Optimization
                     </option>
                     <option value="other" className="bg-surface-2">
                       Something else entirely

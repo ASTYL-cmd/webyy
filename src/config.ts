@@ -1,138 +1,187 @@
 // =====================================================
 // WEBYY CONFIGURATION
-// Update these values to customize your website
 // =====================================================
 
 export const companyInfo = {
   name: 'Webyy',
   tagline: 'Digital Experience Studio',
-  founded: '2019',
-  description: 'Premium website development agency crafting stunning, high-performance websites that convert visitors into customers.',
+  founded: '2023',
+  description: 'Premium website design and development agency crafting stunning, high-performance websites for businesses, startups, and professionals.',
   email: 'contact.webyy@gmail.com',
-  phone: '+1 (555) 123-4567', // Update with your phone
-  whatsapp: '+15551234567', // Update with your WhatsApp number (no spaces/dashes)
-  locations: ['New York', 'Los Angeles', 'Remote-first'],
+  phone: '+91 98765 43210',
+  whatsapp: '919876543210',
+  locations: ['India', 'Remote-first'],
 
-  // Social Media URLs - Update these with your actual profiles
   social: {
-    instagram: 'https://instagram.com/yourprofile', // Update this
-    twitter: 'https://twitter.com/yourprofile', // Update this
-    linkedin: 'https://linkedin.com/company/yourprofile', // Update this
-    dribbble: 'https://dribbble.com/yourprofile', // Update this
-  },
-
-  // Logo placeholder - Replace with your actual logo
-  logo: {
-    src: 'https://images.pexels.com/pexels/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=200',
-    alt: 'Webyy Logo',
-    width: 150,
-    height: 40,
-  },
-
-  // SEO
-  seo: {
-    title: 'Webyy — Premium Website Development Agency',
-    description: 'Premium website development agency crafting stunning, high-performance websites that convert visitors into customers.',
-    keywords: ['web development', 'website design', 'custom websites', 'web agency', 'responsive design', 'React', 'Next.js', 'premium websites'],
-    ogImage: 'https://images.pexels.com/pexels/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    instagram: 'https://instagram.com/webyy',
+    twitter: 'https://twitter.com/webyy',
+    linkedin: 'https://linkedin.com/company/webyy',
+    dribbble: 'https://dribbble.com/webyy',
   },
 };
 
 export const navigation = [
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#work' },
-  { label: 'About', href: '#about' },
-  { label: 'Process', href: '#process' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'Team', href: '#team' },
   { label: 'Contact', href: '#contact' },
 ];
 
 export const services = [
   {
     id: 1,
-    icon: 'Zap',
-    name: 'Web Development',
+    icon: 'Globe',
+    name: 'Website Design',
     description:
-      'High-performance websites engineered for speed, scalability, and conversion. Every line of code is crafted with precision to deliver exceptional user experiences.',
-    tags: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
+      'We craft visually stunning, user-centric websites that reflect your brand identity. Every pixel is considered — from layout to color to typography.',
+    tags: ['UI Design', 'Figma', 'Branding', 'Prototypes'],
   },
   {
     id: 2,
-    icon: 'Palette',
-    name: 'UI/UX Design',
+    icon: 'Code',
+    name: 'Website Development',
     description:
-      'User-centered design that guides visitors through intuitive journeys. We create interfaces that feel natural, look stunning, and drive measurable results.',
-    tags: ['Research', 'Wireframes', 'Prototypes', 'Design Systems'],
+      'High-performance, scalable websites built with modern technologies. Clean code, fast load times, and seamless functionality.',
+    tags: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
   },
   {
     id: 3,
-    icon: 'ShoppingCart',
-    name: 'E-Commerce',
+    icon: 'RefreshCw',
+    name: 'Website Redesign',
     description:
-      'Convert browsers into buyers with custom e-commerce solutions. Seamless checkout experiences, inventory management, and payment integrations that scale.',
-    tags: ['Shopify', 'WooCommerce', 'Custom Carts', 'Payment APIs'],
+      'Transform your outdated website into a conversion-focused digital experience. We analyze, strategize, and rebuild for better results.',
+    tags: ['Audit', 'Conversion', 'UX Refresh', 'Performance'],
   },
   {
     id: 4,
-    icon: 'Smartphone',
-    name: 'Responsive Design',
+    icon: 'Layout',
+    name: 'Landing Pages',
     description:
-      'Pixel-perfect across every device and screen size. From mobile-first smartphones to ultra-wide desktop displays, your site looks flawless everywhere.',
-    tags: ['Mobile', 'Tablet', 'Desktop', 'Progressive Web Apps'],
+      'High-converting landing pages engineered to turn visitors into leads and customers. Focused design with clear calls-to-action.',
+    tags: ['CRO', 'Lead Gen', 'A/B Testing', 'Fast Delivery'],
   },
   {
     id: 5,
-    icon: 'Search',
-    name: 'SEO Optimization',
+    icon: 'Briefcase',
+    name: 'Business Websites',
     description:
-      'Get found by your ideal customers. Technical SEO architecture, content strategy, and performance optimization that climbs search rankings and drives organic traffic.',
-    tags: ['Technical SEO', 'Content Strategy', 'Analytics', 'Core Web Vitals'],
+      'Professional websites for businesses of all sizes. Establish credibility, showcase your offerings, and attract the right clients.',
+    tags: ['Corporate', 'Multi-page', 'CMS', 'SEO-ready'],
   },
   {
     id: 6,
-    icon: 'Rocket',
-    name: 'Maintenance & Support',
+    icon: 'Search',
+    name: 'SEO Optimization',
     description:
-      'Keep your website running at peak performance. Regular updates, security patches, performance monitoring, and priority support when you need it most.',
-    tags: ['Updates', 'Security', 'Backups', '24/7 Support'],
+      'Get found by your ideal customers. Technical SEO, on-page optimization, and performance tuning that climbs rankings and drives organic traffic.',
+    tags: ['Technical SEO', 'Core Web Vitals', 'Analytics', 'Content Strategy'],
   },
 ];
 
 export const portfolio = [
   {
     id: 1,
-    title: 'TechFlow — SaaS Platform Redesign',
-    type: 'Web Development + UI/UX',
-    year: '2024',
-    award: 'Awwwards Honorable Mention',
-    gradient: 'from-blue-900/30 to-purple-900/30',
+    title: 'Flyo.ai',
+    type: 'SaaS / AI Platform',
+    description: 'A modern AI-powered platform designed to streamline workflows. Webyy built the full frontend experience — from onboarding to dashboard — with a focus on speed and clarity.',
+    url: 'https://flyo.ai',
+    image: 'https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    gradient: 'from-blue-900/50 to-cyan-900/40',
     icon: 'Globe',
+    tags: ['React', 'Tailwind', 'AI Integration'],
   },
   {
     id: 2,
-    title: 'Verdant Health — Wellness Brand',
-    type: 'Brand Identity + Website',
-    year: '2024',
-    award: 'CSS Design Awards Winner',
-    gradient: 'from-emerald-900/30 to-cyan-900/30',
-    icon: 'Leaf',
+    title: 'Astyl',
+    type: 'Fashion / E-Commerce',
+    description: 'A premium fashion brand website with a sleek editorial aesthetic. Webyy redesigned and developed the full shopping experience, improving engagement and conversions.',
+    url: 'https://astyl.in',
+    image: 'https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    gradient: 'from-purple-900/50 to-pink-900/40',
+    icon: 'ShoppingBag',
+    tags: ['E-Commerce', 'UI/UX', 'Next.js'],
+  },
+];
+
+export const pricingPlans = [
+  {
+    id: 1,
+    name: 'Starter',
+    price: 17000,
+    duration: '1 Year',
+    description: 'Perfect for freelancers, consultants, and small businesses getting started online.',
+    features: [
+      'Up to 5 pages',
+      'Responsive Design',
+      'Contact Form',
+      'Basic SEO Setup',
+      'Google Analytics Integration',
+      '1 Year Hosting Support',
+      '1 Round of Revisions',
+    ],
+    cta: 'Get Started',
+    highlight: false,
+  },
+  {
+    id: 2,
+    name: 'Professional',
+    price: 25000,
+    duration: '2 Years',
+    description: 'For growing businesses that need a polished, high-performing online presence.',
+    features: [
+      'Up to 10 pages',
+      'Custom UI/UX Design',
+      'Advanced Contact & Inquiry Forms',
+      'Full On-Page SEO',
+      'Speed Optimization',
+      'Social Media Integration',
+      '2 Years Hosting Support',
+      '3 Rounds of Revisions',
+      'WhatsApp Chat Integration',
+    ],
+    cta: 'Most Popular',
+    highlight: true,
   },
   {
     id: 3,
-    title: 'Luxe Fashion — E-Commerce Store',
-    type: 'E-Commerce + Motion',
-    year: '2024',
-    award: 'FWA Site of the Day',
-    gradient: 'from-purple-900/30 to-pink-900/30',
-    icon: 'ShoppingBag',
+    name: 'Business',
+    price: 35000,
+    duration: '3 Years',
+    description: 'For established businesses and brands that demand the best digital experience.',
+    features: [
+      'Unlimited Pages',
+      'Premium Custom Design',
+      'E-Commerce or Blog (optional)',
+      'Advanced SEO & Analytics',
+      'Performance Audits',
+      'CMS Integration',
+      '3 Years Hosting Support',
+      'Unlimited Revisions',
+      'Priority Support',
+      'Monthly Maintenance',
+    ],
+    cta: 'Build Now',
+    highlight: false,
+  },
+];
+
+export const team = [
+  {
+    id: 1,
+    name: 'Saurabh Mishra',
+    role: 'Lead Website Engineer',
+    description: 'Responsible for website architecture, development, technical implementation, and project execution. Saurabh leads all engineering efforts at Webyy with a focus on performance and precision.',
+    linkedin: 'https://linkedin.com/in/saurabh-mishra',
+    avatar: 'S',
   },
   {
-    id: 4,
-    title: 'BuildRight Construction — Portfolio',
-    type: '3D + Interactive',
-    year: '2023',
-    award: 'Awwwards SOTD',
-    gradient: 'from-orange-900/30 to-amber-900/30',
-    icon: 'Building2',
+    id: 2,
+    name: 'Atul Mishra',
+    role: 'Business Manager',
+    description: 'Responsible for client communication, project coordination, business operations, and growth. Atul ensures every client relationship is built on trust, clarity, and results.',
+    linkedin: 'https://linkedin.com/in/atul-mishra',
+    avatar: 'A',
   },
 ];
 
@@ -140,50 +189,34 @@ export const testimonials = [
   {
     id: 1,
     rating: 5,
-    text: "Webyy transformed our outdated website into a conversion machine. Our leads increased 340% in the first quarter after launch. The attention to detail is unmatched.",
-    author: 'Sarah Mitchell',
-    role: 'CEO, TechFlow',
-    avatar: 'S',
+    text: "Webyy built our landing page from scratch and it looks incredible. The design exceeded our expectations and we started getting inquiries within days of launch.",
+    author: 'Priya Sharma',
+    role: 'Founder, StyleBoutique',
+    avatar: 'P',
   },
   {
     id: 2,
     rating: 5,
-    text: "Working with Webyy was a game-changer. They didn't just build us a website — they built us a digital growth engine. Professional, responsive, and incredibly talented.",
-    author: 'David Park',
-    role: 'Founder, Verdant Health',
-    avatar: 'D',
+    text: "Professional, responsive, and incredibly talented. Webyy redesigned our business website and it now feels like a proper enterprise brand. Highly recommend.",
+    author: 'Rahul Verma',
+    role: 'Director, TechSpark Solutions',
+    avatar: 'R',
   },
   {
     id: 3,
     rating: 5,
-    text: "Our conversion rate jumped 280% after the redesign. The site loads in under 2 seconds and our customers love the new experience. Worth every penny.",
-    author: 'Jessica Torres',
-    role: 'CMO, Luxe Fashion',
-    avatar: 'J',
+    text: "Fast delivery, clean code, beautiful design. Webyy understood our brand voice perfectly and translated it into a website we're genuinely proud to share.",
+    author: 'Ananya Patel',
+    role: 'CEO, Greenwave Organics',
+    avatar: 'A',
   },
   {
     id: 4,
     rating: 5,
-    text: "The best agency we've ever worked with. They took our vague ideas and turned them into a stunning, functional website that exceeds all expectations.",
-    author: 'Michael Chen',
-    role: 'Director, BuildRight',
-    avatar: 'M',
-  },
-  {
-    id: 5,
-    rating: 5,
-    text: "From strategy to launch, Webyy delivered beyond our expectations. The custom CMS they built saves our team hours every week. Highly recommend!",
-    author: 'Amanda Brooks',
-    role: 'VP Marketing, Horizon Media',
-    avatar: 'A',
-  },
-  {
-    id: 6,
-    rating: 5,
-    text: "Professional, creative, and technically brilliant. Webyy understood our brand and translated it into a digital experience that truly represents who we are.",
-    author: 'Robert Williams',
-    role: 'CEO, NexGen Solutions',
-    avatar: 'R',
+    text: "The attention to detail is unmatched. Our portfolio website now gets compliments from every client we share it with. The team at Webyy is exceptional.",
+    author: 'Karan Singh',
+    role: 'Photographer & Creative Director',
+    avatar: 'K',
   },
 ];
 
@@ -193,52 +226,38 @@ export const processSteps = [
     icon: 'Compass',
     title: 'Discovery',
     description:
-      'We dive deep into your business goals, target audience, and competitive landscape. This foundation ensures every decision aligns with your objectives.',
+      'We understand your business goals, target audience, and design preferences. This foundation ensures every decision serves your objectives.',
   },
   {
     step: 2,
     icon: 'Lightbulb',
     title: 'Strategy',
     description:
-      'Research transforms into action. We create a strategic roadmap with clear timelines, deliverables, and measurable KPIs to track success.',
+      'We create a clear roadmap — pages, structure, tech stack, and content plan — so there are no surprises during execution.',
   },
   {
     step: 3,
     icon: 'Pencil',
     title: 'Design',
     description:
-      'From wireframes to pixel-perfect designs. Every visual element is crafted to communicate your brand story and guide users toward conversion.',
+      'From wireframes to high-fidelity designs. Every screen is crafted to look stunning, communicate clearly, and guide users toward action.',
   },
   {
     step: 4,
     icon: 'Rocket',
     title: 'Launch',
     description:
-      'Rigorous testing, performance optimization, and a seamless launch. We monitor everything post-launch and optimize until the numbers speak for themselves.',
+      'Thorough testing, speed optimization, and a smooth deployment. We stay available post-launch to ensure everything runs perfectly.',
   },
 ];
 
-export const stats = [
-  { value: 150, suffix: '+', label: 'Projects Delivered', sublabel: 'Across 18 countries' },
-  { value: 98, suffix: '%', label: 'Client Satisfaction', sublabel: 'Based on feedback surveys' },
-  { value: 35, suffix: '+', label: 'Awards Won', sublabel: 'Awwwards, FWA, CSS Awards' },
-  { value: 6, suffix: 'yr', label: 'In Business', sublabel: 'Established 2019' },
-];
-
-export const timeline = [
-  { year: '2019', title: 'Founded', description: 'Started with a vision to create exceptional digital experiences for growing businesses.' },
-  { year: '2021', title: 'First Award Recognition', description: 'Won our first Awwwards Site of the Day for an innovative fintech project.' },
-  { year: '2023', title: 'Team Expansion', description: 'Grew to a team of 15 specialists covering design, development, and strategy.' },
-  { year: '2025', title: 'New Partnerships', description: 'Accepting new client partnerships. Selective by design to maintain quality.' },
-];
-
 export const tickerItems = [
-  'Web Development',
-  'UI/UX Design',
-  'E-Commerce',
+  'Website Design',
+  'Website Development',
+  'Landing Pages',
   'SEO Optimization',
-  'Responsive Design',
-  'Brand Identity',
-  'Custom Solutions',
-  'Maintenance & Support',
+  'UI/UX Design',
+  'Business Websites',
+  'Portfolio Websites',
+  'Website Redesign',
 ];

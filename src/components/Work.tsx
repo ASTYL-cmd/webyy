@@ -1,9 +1,8 @@
 import {
   Globe,
-  Leaf,
   ShoppingBag,
-  Building2,
   ArrowUpRight,
+  ExternalLink,
 } from 'lucide-react';
 import { portfolio } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -11,9 +10,7 @@ import type { LucideIcon } from 'lucide-react';
 
 const iconMap: Record<string, LucideIcon> = {
   Globe,
-  Leaf,
   ShoppingBag,
-  Building2,
 };
 
 export default function Work() {
@@ -33,70 +30,91 @@ export default function Work() {
               Selected Work
             </div>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold leading-[1] tracking-[-0.03em]">
-              Recent
+              Our
               <br />
               <span className="text-white-20">projects</span>
             </h2>
+            <p className="mt-4 text-base text-white-60 leading-[1.7] max-w-lg">
+              These are some of the projects developed and redesigned by the Webyy team.
+            </p>
           </div>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 py-3 px-6 text-[0.72rem] font-normal tracking-wide bg-white-04 border border-border text-white rounded-full backdrop-blur-sm hover:bg-white-08 hover:border-white-20 transition-all self-start md:self-auto"
+            className="inline-flex items-center gap-2 py-3 px-6 text-[0.72rem] font-normal tracking-wide bg-white-04 border border-border text-white rounded-full backdrop-blur-sm hover:bg-white-08 hover:border-white-20 transition-all self-start md:self-auto btn-hover-lift"
           >
-            View All Work
+            Start a Project
             <ArrowUpRight size={14} />
           </a>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[1.5px]">
+        {/* Project Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {portfolio.map((project, index) => {
             const { ref, isVisible } = useScrollReveal();
             const Icon = iconMap[project.icon];
-            const isFirst = index === 0;
-            const delayClass = index === 1 ? 'reveal-delay-1' : index === 2 ? 'reveal-delay-2' : index === 3 ? 'reveal-delay-3' : '';
+            const delayClass = index === 1 ? 'reveal-delay-2' : '';
 
             return (
               <div
                 key={project.id}
                 ref={ref}
-                className={`group relative overflow-hidden cursor-pointer bg-surface reveal ${isVisible ? 'visible' : ''} ${delayClass} ${
-                  isFirst ? 'md:col-span-2' : ''
-                }`}
+                className={`group relative bg-surface-2 border border-border rounded-2xl overflow-hidden transition-all duration-400 hover:border-blue/30 reveal ${isVisible ? 'visible' : ''} ${delayClass}`}
               >
-                {/* Image Container */}
-                <div
-                  className={`relative overflow-hidden transition-transform duration-600 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04] ${
-                    isFirst ? 'aspect-[21/9]' : 'aspect-video'
-                  }`}
-                >
-                  {/* Gradient Background */}
+                {/* Screenshot Area */}
+                <div className="relative overflow-hidden aspect-[16/10] group-hover:scale-[1.02] transition-transform duration-500">
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${project.gradient} flex items-center justify-center`}
+                    className="absolute inset-0 bg-gradient-to-br ${project.gradient} flex items-center justify-center"
+                    style={{ background: `linear-gradient(to bottom right, ${project.gradient.includes('blue') ? '#4F8EF7' : '#8B5CF6'}, #0d0d0d)` }}
                   >
-                    <div className="filter drop-shadow-[0_0_60px_rgba(79,142,247,0.4)]">
-                      {Icon && <Icon size={80} className="text-white/10" />}
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-500"
+                    />
+                    <div className="relative z-10 flex items-center justify-center">
+                      <div className="w-20 h-20 bg-gradient-to-br from-blue to-purple rounded-2xl flex items-center justify-center shadow-glow-blue group-hover:scale-110 transition-transform duration-300">
+                        {Icon && <Icon size={36} className="text-white" />}
+                      </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-void/90 via-void/20 to-transparent flex flex-col justify-end p-6 md:p-10">
-                    <div className="text-[0.62rem] tracking-[0.2em] uppercase text-blue mb-2">
+                {/* Content */}
+                <div className="p-6 md:p-8">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[0.6rem] font-semibold tracking-[0.15em] uppercase text-blue">
                       {project.type}
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-[0.75rem] text-white-60">
-                      {project.year} · {project.award}
-                    </p>
+                    </span>
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-3">
+                    {project.title}
+                  </h3>
+                  <p className="text-[0.82rem] text-white-60 leading-[1.7] mb-5">
+                    {project.description}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.tags?.map((tag) => (
+                      <span
+                        key={tag}
+                        className="py-1 px-3 bg-white-04 border border-border rounded-full text-[0.6rem] tracking-[0.1em] text-white-60"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
 
-                  {/* Hover View Button */}
-                  <div className="absolute inset-0 bg-void/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="py-3 px-6 bg-gradient-primary rounded-full text-white text-[0.72rem] font-semibold tracking-[0.1em] translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
-                      View Project
-                    </div>
-                  </div>
+                  {/* Visit Button */}
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 py-3 px-6 bg-gradient-primary rounded-full text-white text-[0.8rem] font-semibold tracking-wide btn-hover-lift shadow-glow-blue group/btn"
+                  >
+                    Visit Project
+                    <ExternalLink size={14} className="transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                  </a>
                 </div>
               </div>
             );

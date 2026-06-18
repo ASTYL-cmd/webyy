@@ -6,6 +6,8 @@ import Work from './components/Work';
 import About from './components/About';
 import Testimonials from './components/Testimonials';
 import Process from './components/Process';
+import Pricing from './components/Pricing';
+import Team from './components/Team';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
@@ -21,6 +23,8 @@ function App() {
         <About />
         <Testimonials />
         <Process />
+        <Pricing />
+        <Team />
         <Contact />
       </main>
       <Footer />

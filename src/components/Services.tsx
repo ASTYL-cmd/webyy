@@ -1,15 +1,15 @@
-import { Zap, Palette, ShoppingCart, Smartphone, Search, Rocket, ArrowUpRight } from 'lucide-react';
+import { Globe, Code, RefreshCw, LayoutGrid as Layout, Briefcase, Search, ArrowUpRight } from 'lucide-react';
 import { services } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import type { LucideIcon } from 'lucide-react';
 
 const iconMap: Record<string, LucideIcon> = {
-  Zap,
-  Palette,
-  ShoppingCart,
-  Smartphone,
+  Globe,
+  Code,
+  RefreshCw,
+  Layout,
+  Briefcase,
   Search,
-  Rocket,
 };
 
 interface ServiceCardProps {
