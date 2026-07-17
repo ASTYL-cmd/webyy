@@ -10,8 +10,9 @@ import Pricing from './components/Pricing';
 import Team from './components/Team';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Terms from './components/Terms';
 
-function App() {
+function HomePage() {
   return (
     <div className="min-h-screen bg-void text-white-custom font-sans antialiased">
       <Navigation />
@@ -30,6 +31,16 @@ function App() {
       <Footer />
     </div>
   );
+}
+
+function App() {
+  const path = window.location.pathname;
+
+  if (path === '/term' || path === '/term/' || path === '/term/index.html') {
+    return <Terms />;
+  }
+
+  return <HomePage />;
 }
 
 export default App;

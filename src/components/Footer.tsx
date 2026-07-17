@@ -28,6 +28,12 @@ export default function Footer() {
                 {item.label}
               </a>
             ))}
+            <a
+              href="/term"
+              className="text-[0.72rem] tracking-[0.1em] uppercase text-white-60 hover:text-blue transition-colors"
+            >
+              Terms
+            </a>
           </nav>
 
           {/* Social Links */}
