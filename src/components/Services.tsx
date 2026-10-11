@@ -21,28 +21,15 @@ function ServiceCard({ service, index }: ServiceCardProps) {
   const { ref, isVisible } = useScrollReveal();
   const Icon = iconMap[service.icon];
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const cx = ((e.clientX - rect.left) / rect.width) * 100;
-    const cy = ((e.clientY - rect.top) / rect.height) * 100;
-    ref.current.style.setProperty('--cx', cx + '%');
-    ref.current.style.setProperty('--cy', cy + '%');
-  };
-
   const delayClass = index % 3 === 1 ? 'reveal-delay-1' : index % 3 === 2 ? 'reveal-delay-2' : '';
 
   return (
     <div
       ref={ref}
-      onMouseMove={handleMouseMove}
-      className={`relative overflow-hidden px-8 md:px-10 py-10 md:py-12 bg-surface border border-border cursor-pointer transition-all duration-400 group card-hover ${
+      data-spot
+      className={`spot glass-card lift rounded-2xl px-8 md:px-10 py-10 md:py-12 group ${
         isVisible ? 'visible' : ''
       } ${delayClass} reveal`}
-      style={{
-        background:
-          'radial-gradient(400px circle at var(--cx, 50%) var(--cy, 50%), rgba(79,142,247,0.08) 0%, transparent 70%)',
-      }}
     >
       {/* Number */}
       <div className="text-[0.65rem] font-semibold tracking-[0.2em] text-blue mb-8 tabular-nums">
@@ -50,7 +37,7 @@ function ServiceCard({ service, index }: ServiceCardProps) {
       </div>
 
       {/* Icon */}
-      <div className="w-14 h-14 bg-gradient-to-br from-blue-glow to-purple-glow border border-blue/20 rounded-lg flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-[5deg] group-hover:shadow-glow-blue">
+      <div className="w-14 h-14 bg-gradient-to-br from-blue-glow to-purple-glow border border-blue/20 rounded-lg flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-105 group-hover:shadow-glow-blue">
         {Icon && <Icon size={22} className="text-blue" />}
       </div>
 
@@ -73,11 +60,21 @@ function ServiceCard({ service, index }: ServiceCardProps) {
       </div>
 
       {/* Arrow */}
-      <div className="absolute bottom-8 right-8 w-10 h-10 border border-border rounded-full flex items-center justify-center text-white-60 transition-all duration-300 rotate-45 group-hover:rotate-0 group-hover:scale-110 group-hover:border-blue group-hover:text-blue group-hover:shadow-glow-purple">
+      <div className="absolute bottom-8 right-8 w-10 h-10 border border-border rounded-full flex items-center justify-center text-white-60 transition-all duration-300 group-hover:border-blue group-hover:text-blue group-hover:shadow-glow-purple">
         <ArrowUpRight size={16} />
       </div>
     </div>
   );
+}
+
+// One pointermove handler for every card: sets --mx / --my on the hovered card.
+function handleGridPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+  if (e.pointerType !== 'mouse') return;
+  const card = (e.target as HTMLElement).closest<HTMLElement>('[data-spot]');
+  if (!card) return;
+  const rect = card.getBoundingClientRect();
+  card.style.setProperty('--mx', e.clientX - rect.left + 'px');
+  card.style.setProperty('--my', e.clientY - rect.top + 'px');
 }
 
 export default function Services() {
@@ -100,7 +97,10 @@ export default function Services() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1.5px]">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5"
+          onPointerMove={handleGridPointerMove}
+        >
           {services.map((service, index) => (
             <ServiceCard key={service.id} service={service} index={index} />
           ))}

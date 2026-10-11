@@ -10,6 +10,9 @@ import Team from './components/Team';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Terms from './components/Terms';
+import Founder from './components/Founder';
+import FounderPage from './components/FounderPage';
+import WhatsAppButton from './components/WhatsAppButton';
 
 function HomePage() {
   return (
@@ -24,15 +27,21 @@ function HomePage() {
         <Process />
         <Pricing />
         <Team />
+        <Founder />
         <Contact />
       </main>
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }
 
 function App() {
   const path = window.location.pathname;
+
+  if (path === '/founder' || path === '/founder/') {
+    return <FounderPage />;
+  }
 
   if (path === '/term' || path === '/term/' || path === '/term/index.html') {
     return <Terms />;

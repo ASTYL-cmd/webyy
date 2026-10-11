@@ -2,6 +2,7 @@ import { Globe, ShoppingBag, ArrowUpRight } from 'lucide-react';
 import { portfolio } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import type { LucideIcon } from 'lucide-react';
+import AssetImage from './AssetImage';
 
 const iconMap: Record<string, LucideIcon> = {
   Globe,
@@ -25,11 +26,23 @@ function ProjectTile({ project, index }: ProjectTileProps) {
       href={project.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group relative flex flex-col items-center justify-center gap-4 bg-surface-2 border border-border rounded-2xl px-6 py-10 transition-all duration-400 hover:border-blue/30 hover:shadow-glow-blue hover:-translate-y-1 reveal ${isVisible ? 'visible' : ''} ${delayClass}`}
+      aria-label={`${project.title} — open live site in a new tab`}
+      className={`group glass-card lift relative flex flex-col items-center justify-center gap-4 rounded-2xl px-6 py-8 reveal ${isVisible ? 'visible' : ''} ${delayClass}`}
     >
-      {/* Logo / Thumbnail */}
-      <div className="w-14 h-14 bg-gradient-to-br from-blue-glow to-purple-glow border border-border-bright rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-        {Icon && <Icon size={24} className="text-blue" />}
+      {/* Logo: fixed display area, object-fit: contain */}
+      <div className="w-full h-20 md:h-24 flex items-center justify-center transition-transform duration-[var(--dur-2)] ease-[var(--ease)] group-hover:scale-105">
+        <AssetImage
+          src={project.logo}
+          alt={project.alt}
+          width={160}
+          height={96}
+          className="max-h-full max-w-[70%] w-auto h-auto"
+          fallback={
+            <div className="w-14 h-14 bg-gradient-to-br from-blue-glow to-purple-glow border border-border-bright rounded-xl flex items-center justify-center">
+              {Icon && <Icon size={24} className="text-blue" />}
+            </div>
+          }
+        />
       </div>
 
       {/* Project Name */}
@@ -37,9 +50,10 @@ function ProjectTile({ project, index }: ProjectTileProps) {
         {project.title}
       </span>
 
-      {/* External link indicator on hover */}
-      <span className="absolute top-4 right-4 w-7 h-7 border border-border rounded-full flex items-center justify-center text-white-60 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:border-blue group-hover:text-blue">
-        <ArrowUpRight size={13} />
+      {/* Small "Open" arrow (always visible on touch, fades in on hover/focus for pointers) */}
+      <span className="absolute top-3 right-3 inline-flex items-center gap-1 py-1 px-2 rounded-full border border-border text-[0.6rem] tracking-[0.12em] uppercase text-white-60 transition-opacity duration-[var(--dur-1)] [@media(hover:hover)]:opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:text-accent group-hover:border-accent" aria-hidden="true">
+        Open
+        <ArrowUpRight size={11} />
       </span>
     </a>
   );

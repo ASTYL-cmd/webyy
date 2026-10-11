@@ -1,9 +1,10 @@
-import { Linkedin } from 'lucide-react';
+import { Linkedin, Instagram } from 'lucide-react';
 import { team } from '../config';
+import type { TeamMember } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 interface TeamCardProps {
-  member: (typeof team)[0];
+  member: TeamMember;
   index: number;
 }
 
@@ -14,7 +15,7 @@ function TeamCard({ member, index }: TeamCardProps) {
   return (
     <div
       ref={ref}
-      className={`relative bg-surface-2 border border-border p-8 md:p-10 transition-all duration-400 group hover:border-blue/30 reveal ${isVisible ? 'visible' : ''} ${delayClass}`}
+      className={`glass-card lift relative rounded-2xl p-8 md:p-10 group hover:border-blue/30 reveal ${isVisible ? 'visible' : ''} ${delayClass}`}
     >
       {/* Avatar */}
       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue to-purple flex items-center justify-center text-white text-2xl font-extrabold mb-6 transition-transform duration-300 group-hover:scale-105">
@@ -32,16 +33,29 @@ function TeamCard({ member, index }: TeamCardProps) {
         {member.description}
       </p>
 
-      {/* LinkedIn */}
-      <a
-        href={member.linkedin}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 py-2 px-4 bg-white-04 border border-border rounded-full text-[0.72rem] text-white-60 hover:border-blue hover:text-blue transition-all"
-      >
-        <Linkedin size={13} />
-        Connect on LinkedIn
-      </a>
+      {/* Each person links only to their own profile */}
+      {member.linkedin && (
+        <a
+          href={member.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 py-2 px-4 bg-white-04 border border-border rounded-full text-[0.72rem] text-white-60 hover:border-blue hover:text-blue transition-all"
+        >
+          <Linkedin size={13} />
+          Connect on LinkedIn
+        </a>
+      )}
+      {member.instagram && (
+        <a
+          href={member.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 py-2 px-4 bg-white-04 border border-border rounded-full text-[0.72rem] text-white-60 hover:border-blue hover:text-blue transition-all"
+        >
+          <Instagram size={13} />
+          Follow on Instagram
+        </a>
+      )}
     </div>
   );
 }
@@ -70,7 +84,7 @@ export default function Team() {
         </div>
 
         {/* Team Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[1.5px] max-w-3xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 max-w-3xl">
           {team.map((member, index) => (
             <TeamCard key={member.id} member={member} index={index} />
           ))}

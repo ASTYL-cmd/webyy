@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { companyInfo } from '../config';
+import Logo from './Logo';
+import { hasFinePointer, prefersReducedMotion, useMagneticEffect } from '../hooks/useScrollReveal';
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
+  const magneticRef = useMagneticEffect<HTMLDivElement>(0.2);
   const [loaded, setLoaded] = useState(false);
 
   // Loader simulation
@@ -99,7 +101,9 @@ export default function Hero() {
         }
       }
 
-      animationId = requestAnimationFrame(draw);
+      if (!prefersReducedMotion()) {
+        animationId = requestAnimationFrame(draw);
+      }
     };
 
     resize();
@@ -112,22 +116,32 @@ export default function Hero() {
     };
   }, []);
 
-  // Mouse Spotlight
+  // Pointer: background spotlight (fine pointers only, rAF-throttled)
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!spotlightRef.current) return;
-      const hero = document.getElementById('hero');
-      if (!hero) return;
-      const rect = hero.getBoundingClientRect();
-      const px = ((e.clientX - rect.left) / rect.width) * 100;
-      const py = ((e.clientY - rect.top) / rect.height) * 100;
-      spotlightRef.current.style.setProperty('--mx', px + '%');
-      spotlightRef.current.style.setProperty('--my', py + '%');
+    if (!hasFinePointer()) return;
+    let raf = 0;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const hero = document.getElementById('hero');
+        if (!hero) return;
+        const rect = hero.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width;
+        const ny = (e.clientY - rect.top) / rect.height;
+        spotlightRef.current?.style.setProperty('--mx', nx * 100 + '%');
+        spotlightRef.current?.style.setProperty('--my', ny * 100 + '%');
+      });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('pointermove', handlePointerMove);
+    };
   }, []);
+
+  const headline = ['We', 'Build', 'Digital', 'Experiences'];
 
   return (
     <>
@@ -136,10 +150,9 @@ export default function Hero() {
         className={`fixed inset-0 z-[10000] bg-void flex flex-col items-center justify-center gap-8 transition-all duration-600 ${
           loaded ? 'opacity-0 invisible pointer-events-none' : ''
         }`}
+        aria-hidden={loaded}
       >
-        <div className="text-sm font-extrabold tracking-[0.4em] uppercase gradient-text">
-          {companyInfo.name}
-        </div>
+        <Logo height={44} />
         <div className="w-52 h-[1px] bg-white-08 relative overflow-hidden">
           <div className="absolute left-0 top-0 h-full bg-gradient-primary animate-[loadFill_1.4s_ease_forwards]" />
         </div>
@@ -149,12 +162,10 @@ export default function Hero() {
       {/* Hero Section */}
       <section
         id="hero"
-        className="relative min-h-screen flex items-center justify-center text-center overflow-hidden px-[4vw] py-32 md:py-48"
+        className="relative min-h-screen flex items-center overflow-hidden px-[4vw] py-32 md:py-44"
       >
-        {/* Canvas Background */}
-        <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full" />
+        <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full" aria-hidden="true" />
 
-        {/* Mouse Spotlight */}
         <div
           ref={spotlightRef}
           className="absolute inset-0 z-[1] pointer-events-none"
@@ -164,59 +175,61 @@ export default function Hero() {
           }}
         />
 
-        {/* Orbital Rings */}
         <div className="absolute rounded-full border border-blue/8 animate-orbit pointer-events-none z-[1] w-[300px] h-[300px] md:w-[500px] md:h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50" />
-        <div
-          className="absolute rounded-full border border-purple/6 animate-orbit-reverse pointer-events-none z-[1] w-[400px] h-[400px] md:w-[700px] md:h-[700px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-40"
-        />
-        <div
-          className="absolute rounded-full border border-blue/4 animate-orbit pointer-events-none z-[1] hidden md:block w-[900px] h-[900px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          style={{ animationDuration: '60s' }}
-        />
+        <div className="absolute rounded-full border border-purple/6 animate-orbit-reverse pointer-events-none z-[1] w-[400px] h-[400px] md:w-[700px] md:h-[700px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-40" />
 
         {/* Content */}
-        <div className="relative z-[2] max-w-6xl">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 py-2 px-4 bg-white-04 border border-border rounded-full text-[0.68rem] font-medium tracking-[0.15em] uppercase text-white-60 mb-8 md:mb-10 backdrop-blur-sm animate-fade-up opacity-0 [animation-delay:0.2s]">
-            <span className="w-2 h-2 rounded-full bg-cyan animate-pulse-custom" />
-            Available for New Projects
+        <div className="relative z-[2] w-full max-w-[1300px] mx-auto grid grid-cols-1 items-center text-center">
+          <div>
+            <div className="glass-card inline-flex items-center gap-2 py-2 px-4 rounded-full text-[0.68rem] font-medium tracking-[0.15em] uppercase text-white-60 mb-8 md:mb-10 animate-fade-up opacity-0 [animation-delay:0.2s]">
+              <span className="w-2 h-2 rounded-full bg-cyan animate-pulse-custom" />
+              Available for New Projects
+            </div>
+
+            <h1
+              className="text-[clamp(2.75rem,7.5vw,6.5rem)] font-bold leading-[0.98] tracking-[-0.04em] mb-6 md:mb-8"
+              aria-label="We Build Digital Experiences"
+            >
+              {headline.map((word, i) => (
+                <span key={word} aria-hidden="true">
+                  <span
+                    className={`hero-word ${word === 'Digital' ? 'text-gradient-animated' : ''}`}
+                    style={{ '--i': i } as React.CSSProperties}
+                  >
+                    {word}
+                  </span>{' '}
+                  {i === 1 && <br />}
+                </span>
+              ))}
+            </h1>
+
+            <p className="text-[clamp(1rem,1.6vw,1.2rem)] font-light leading-relaxed text-white-60 max-w-[600px] mx-auto mb-8 md:mb-12 animate-fade-up opacity-0 [animation-delay:0.9s]">
+              Premium website development agency crafting stunning, high-performance websites that
+              convert visitors into customers. Strategy, design, and engineering — unified.
+            </p>
+
+            <div className="flex gap-4 justify-center flex-wrap items-center">
+              <div ref={magneticRef} className="animate-fade-up opacity-0 [animation-delay:1.05s]">
+                <a
+                  href="#work"
+                  className="inline-flex items-center gap-2 py-4 px-8 text-[0.82rem] font-semibold tracking-wide bg-gradient-primary text-white rounded-full btn-hover-lift shadow-glow-blue hover:shadow-glow-blue-lg group"
+                >
+                  View Our Work
+                  <ChevronDown className="w-4 h-4 rotate-[-90deg] group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+              <a
+                href="#contact"
+                className="glass-card inline-flex items-center gap-2 py-4 px-8 text-[0.82rem] font-normal tracking-wide text-white rounded-full btn-hover-lift hover:border-white-20 animate-fade-up opacity-0 [animation-delay:1.2s]"
+              >
+                Start a Project
+              </a>
+            </div>
           </div>
 
-          {/* Title */}
-          <h1 className="text-[clamp(3rem,10vw,9rem)] font-black leading-[0.95] tracking-[-0.04em] mb-6 md:mb-8 animate-fade-up opacity-0 [animation-delay:0.4s]">
-            We Build
-            <br />
-            <span className="text-gradient-animated inline-block">Digital</span>
-            <br />
-            Experiences
-          </h1>
-
-          {/* Description */}
-          <p className="text-[clamp(1rem,1.8vw,1.25rem)] font-light leading-relaxed text-white-60 max-w-[600px] mx-auto mb-8 md:mb-12 animate-fade-up opacity-0 [animation-delay:0.6s]">
-            Premium website development agency crafting stunning, high-performance websites that
-            convert visitors into customers. Strategy, design, and engineering — unified.
-          </p>
-
-          {/* Buttons */}
-          <div className="flex gap-4 justify-center flex-wrap animate-fade-up opacity-0 [animation-delay:0.8s]">
-            <a
-              href="#work"
-              className="inline-flex items-center gap-2 py-4 px-8 text-[0.82rem] font-semibold tracking-wide bg-gradient-primary text-white rounded-full btn-hover-lift shadow-glow-blue hover:shadow-glow-blue-lg group"
-            >
-              View Our Work
-              <ChevronDown className="w-4 h-4 rotate-[-90deg] group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 py-4 px-8 text-[0.82rem] font-normal tracking-wide bg-white-04 border border-border text-white rounded-full backdrop-blur-sm btn-hover-lift hover:bg-white-08 hover:border-white-20"
-            >
-              Start a Project
-            </a>
-          </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 w-full flex flex-col items-center gap-2 z-[2] animate-fade-up opacity-0 [animation-delay:1.2s] left-0 right-0">
+        <div className="absolute bottom-10 w-full hidden md:flex flex-col items-center gap-2 z-[2] animate-fade-up opacity-0 [animation-delay:1.4s] left-0 right-0">
           <span className="text-[0.58rem] tracking-[0.3em] uppercase text-white-60">
             Scroll to explore
           </span>

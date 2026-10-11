@@ -2,7 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/webp" href="/assets/webyy-logo.webp" />
+    <link rel="apple-touch-icon" href="/assets/webyy-logo.webp" />
+    <script>document.documentElement.classList.add('js');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="google-site-verification" content="Y2b9ckeolH4HelmJqPVQjLSVYQc0aB6WmGG2o4oh7rk" />
     <title>Webyy — Premium Website Development Agency</title>
@@ -26,7 +28,36 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Structured data: Organization + Person, linked by @id.
+         Atul's sameAs lists only his own Instagram (the supplied LinkedIn belongs to Saurabh Mishra). -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://webyyonline.netlify.app/#organization",
+          "name": "WEBYY",
+          "url": "https://webyyonline.netlify.app",
+          "description": "WEBYY is a website development brand helping businesses build a strong online presence through modern design, responsive websites, clean interfaces, performance and SEO-conscious development.",
+          "email": "contact.webyy@gmail.com",
+          "telephone": "+919135888913",
+          "sameAs": ["https://www.instagram.com/_webyy/"],
+          "founder": { "@id": "https://webyyonline.netlify.app/#atul-mishra" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://webyyonline.netlify.app/#atul-mishra",
+          "name": "Atul Mishra",
+          "jobTitle": "Founder & Owner",
+          "worksFor": { "@id": "https://webyyonline.netlify.app/#organization" },
+          "sameAs": ["https://www.instagram.com/the.atul.mishra/"]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

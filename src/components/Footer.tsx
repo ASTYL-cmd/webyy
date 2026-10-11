@@ -1,5 +1,6 @@
 import { Instagram, Twitter, Linkedin, Dribbble } from 'lucide-react';
 import { companyInfo, navigation } from '../config';
+import Logo from './Logo';
 
 export default function Footer() {
   return (
@@ -9,10 +10,10 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">
           {/* Logo */}
           <div className="flex flex-col">
-            <div className="text-2xl font-extrabold tracking-[0.2em] gradient-text">
-              {companyInfo.name}
-            </div>
-            <span className="text-[0.55rem] tracking-[0.3em] text-white-60 font-normal mt-1">
+            <a href="#hero" aria-label="WEBYY home" className="inline-flex">
+              <Logo height={40} eager={false} />
+            </a>
+            <span className="text-[0.6rem] tracking-[0.3em] text-white-60 font-normal mt-2">
               Digital Experience Studio · Est. {companyInfo.founded}
             </span>
           </div>
@@ -28,6 +29,12 @@ export default function Footer() {
                 {item.label}
               </a>
             ))}
+            <a
+              href="/founder"
+              className="text-[0.72rem] tracking-[0.1em] uppercase text-white-60 hover:text-blue transition-colors"
+            >
+              Founder
+            </a>
             <a
               href="/term"
               className="text-[0.72rem] tracking-[0.1em] uppercase text-white-60 hover:text-blue transition-colors"
@@ -78,7 +85,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Row */}
-        <div className="border-t border-border pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[0.7rem] text-white-20">
+        <div className="border-t border-border pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[0.7rem] text-white-60">
           <div>
             © {new Date().getFullYear()}{' '}
             <span className="text-blue">{companyInfo.name} Studio</span>. All rights reserved.

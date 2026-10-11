@@ -1,18 +1,74 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { X, Instagram, Twitter, Linkedin } from 'lucide-react';
 import { companyInfo, navigation } from '../config';
+import Logo from './Logo';
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const indicatorRef = useRef<HTMLLIElement>(null);
 
+  // Glass-on-scroll + scroll-progress bar: one passive, rAF-throttled listener.
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 80);
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const y = window.scrollY;
+      setScrolled((prev) => {
+        const next = y > 80;
+        return prev === next ? prev : next;
+      });
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      navRef.current?.style.setProperty('--sp', max > 0 ? String(Math.min(1, y / max)) : '0');
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
+
+  // Active section tracking
+  useEffect(() => {
+    const ids = navigation.map((n) => n.href.slice(1));
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  // Slide the indicator under the active link (transform only)
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    const ind = indicatorRef.current;
+    if (!list || !ind) return;
+    const place = () => {
+      const link = active ? list.querySelector<HTMLElement>(`a[href="#${active}"]`) : null;
+      if (!link) {
+        ind.style.opacity = '0';
+        return;
+      }
+      ind.style.opacity = '1';
+      ind.style.transform = `translateX(${link.offsetLeft}px) scaleX(${link.offsetWidth})`;
+    };
+    place();
+    window.addEventListener('resize', place, { passive: true });
+    return () => window.removeEventListener('resize', place);
+  }, [active]);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -28,27 +84,34 @@ export default function Navigation() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 px-[4vw] py-6 flex items-center justify-between transition-all duration-400 ${
-          scrolled
-            ? 'bg-void/85 backdrop-blur-2xl border-b border-border py-4'
-            : 'bg-transparent border-b border-transparent'
+        ref={navRef}
+        aria-label="Primary"
+        className={`fixed top-0 left-0 right-0 z-50 px-[4vw] flex items-center justify-between transition-[padding,background-color,border-color] duration-[var(--dur-2)] ease-[var(--ease)] ${
+          scrolled ? 'glass-nav py-4' : 'bg-transparent border-b border-transparent py-6'
         }`}
       >
+        <div
+          className="scroll-progress"
+          style={{ opacity: scrolled ? 1 : 0 }}
+          aria-hidden="true"
+        />
+
         {/* Logo */}
-        <a
-          href="#hero"
-          className="text-sm font-extrabold tracking-[0.3em] uppercase text-white gradient-text"
-        >
-          {companyInfo.name}
+        <a href="#hero" aria-label="WEBYY home" className="flex items-center">
+          <Logo className="h-10 lg:h-12" />
         </a>
 
         {/* Desktop Navigation */}
-        <ul className="hidden lg:flex gap-10 list-none">
+        <ul ref={listRef} className="hidden lg:flex gap-10 list-none relative">
+          <li ref={indicatorRef} className="nav-indicator" aria-hidden="true" role="presentation" style={{ opacity: 0 }} />
           {navigation.map((item) => (
             <li key={item.href}>
               <a
                 href={item.href}
-                className="text-[0.72rem] font-normal tracking-[0.1em] uppercase text-white-60 hover:text-white link-underline transition-colors"
+                aria-current={active === item.href.slice(1) ? 'true' : undefined}
+                className={`text-[0.72rem] font-normal tracking-[0.1em] uppercase hover:text-white transition-colors ${
+                  active === item.href.slice(1) ? 'text-white' : 'text-white-60'
+                }`}
               >
                 {item.label}
               </a>
@@ -92,10 +155,14 @@ export default function Navigation() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 z-[60] bg-void/97 backdrop-blur-2xl flex flex-col items-center justify-center gap-8 transition-transform duration-500 ease-out ${
-          mobileOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`glass fixed inset-0 z-[60] bg-void/95 flex flex-col items-center justify-center gap-8 transition-transform duration-500 ease-out ${
+          mobileOpen ? 'translate-x-0' : 'translate-x-full invisible'
         }`}
+        aria-hidden={!mobileOpen}
       >
+        <div className="absolute top-5 left-[4vw]">
+          <Logo className="h-10" />
+        </div>
         <button
           onClick={() => setMobileOpen(false)}
           className="absolute top-6 right-6 p-2 text-white-60 hover:text-white transition-colors"

@@ -22,6 +22,32 @@
   --glass: rgba(13,13,20,0.6);
   --radius: 16px;
   --radius-sm: 8px;
+
+  /* Accent derived from the existing blue + cyan; used sparingly */
+  --accent: #38b0f2;
+
+  /* Typography */
+  --font-display: 'Sora', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-1: 200ms;
+  --dur-2: 400ms;
+  --dur-3: 700ms;
+
+  /* Spacing scale */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 5rem;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --glass-solid: rgba(22, 22, 28, 0.92);
 }
 
 *,
@@ -37,11 +63,32 @@ html {
 }
 
 body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   background: var(--void);
   color: var(--white);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
   overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+/* Soft ambient colour so glass surfaces have something to refract */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60vmax 40vmax at 85% -10%, rgba(79, 142, 247, 0.10), transparent 60%),
+    radial-gradient(50vmax 40vmax at -10% 60%, rgba(139, 92, 246, 0.08), transparent 60%);
 }
 
 /* Selection */
@@ -75,7 +122,7 @@ body::after {
   inset: 0;
   z-index: 9998;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 180px;
 }
@@ -181,31 +228,25 @@ body::after {
   -webkit-backdrop-filter: blur(20px);
 }
 
-/* Custom Cursor Styles for Desktop */
-@media (hover: hover) and (pointer: fine) {
-  body {
-    cursor: none;
-  }
-
-  a, button, input, textarea, select, [role="button"] {
-    cursor: none;
-  }
-}
-
-/* Form Focus States */
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
+/* Keyboard focus: visible on every interactive element */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 /* Button hover transition */
-.btn-hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* Hover lift uses the independent `translate` property so it never fights
+   the reveal's `transform`. 4px, 200ms. */
+.btn-hover-lift,
+.lift {
+  transition: translate var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
 }
 
-.btn-hover-lift:hover {
-  transform: translateY(-2px);
+.btn-hover-lift:hover,
+.lift:hover {
+  translate: 0 -4px;
 }
 
 /* Card hover effect */
@@ -247,34 +288,24 @@ select:focus {
   animation: gradShift 4s ease infinite;
 }
 
-/* Intersection Observer Reveal Animation */
-.reveal {
+/* Reveal: fade + 24px rise, 80ms stagger, once. Only hidden when JS is present. */
+.js .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1),
-    transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translateY(24px);
+  transition: opacity var(--dur-3) var(--ease), transform var(--dur-3) var(--ease),
+    translate var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
 }
 
-.reveal.visible {
+.js .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.reveal-delay-1 {
-  transition-delay: 0.1s;
-}
-
-.reveal-delay-2 {
-  transition-delay: 0.2s;
-}
-
-.reveal-delay-3 {
-  transition-delay: 0.3s;
-}
-
-.reveal-delay-4 {
-  transition-delay: 0.4s;
-}
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
 
 /* Process Step Top Border Animation */
 .process-step-hover::before {
@@ -310,3 +341,185 @@ select:focus {
 .stat-card-hover:hover::after {
   opacity: 1;
 }
+
+/* ------------------------------------------------------------------ */
+/* Glass                                                               */
+/* ------------------------------------------------------------------ */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-nav {
+  background: rgba(5, 5, 5, 0.45);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-card { background: var(--glass-solid); }
+  .glass-nav { background: rgba(8, 8, 10, 0.96); }
+  .glass { background: rgba(13, 13, 20, 0.95); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Service card spotlight (vars set by one pointermove handler)       */
+/* ------------------------------------------------------------------ */
+.spot { position: relative; overflow: hidden; }
+
+.spot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.08), transparent 70%);
+  transition: opacity var(--dur-2) var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spot:hover::before { opacity: 1; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero: headline words                                               */
+/* ------------------------------------------------------------------ */
+@keyframes wordUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-word {
+  display: inline-block;
+  animation: wordUp var(--dur-3) var(--ease) both;
+  animation-delay: calc(350ms + var(--i, 0) * 90ms);
+}
+
+/* ------------------------------------------------------------------ */
+/* Tech marquee                                                        */
+/* ------------------------------------------------------------------ */
+.marquee-track { animation: ticker 45s linear infinite; width: max-content; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* ------------------------------------------------------------------ */
+/* Process timeline                                                    */
+/* ------------------------------------------------------------------ */
+.tl-line {
+  transform-origin: top;
+  transform: scaleY(var(--p, 0));
+}
+
+.tl-node {
+  transition: background var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease),
+    transform var(--dur-2) var(--ease);
+}
+
+.tl-node.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.15);
+}
+
+/* ------------------------------------------------------------------ */
+/* Navbar                                                              */
+/* ------------------------------------------------------------------ */
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 1px;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left center;
+  transition: transform var(--dur-2) var(--ease), opacity var(--dur-1) ease;
+}
+
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--accent));
+  transform-origin: left;
+  transform: scaleX(var(--sp, 0));
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion: no marquee, tilt, magnetic, float, build-in         */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-fade-up { opacity: 1 !important; }
+
+  .js .reveal,
+  .js .reveal.visible {
+    transform: none;
+    transition: opacity var(--dur-1) linear;
+    transition-delay: 0ms;
+  }
+
+  .hero-word { opacity: 1; transform: none; }
+  .marquee-track { animation: none !important; }
+  .portrait, .portrait-img, .portrait-glow { animation: none !important; transform: none !important; }
+  .marquee { overflow-x: auto; }
+  .btn-hover-lift:hover, .lift:hover { translate: none; }
+  .tl-line { transform: scaleY(1); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Founder portrait: rectangular glass frame                           */
+/* ------------------------------------------------------------------ */
+@keyframes portraitIn { from { opacity: 0; transform: translateY(32px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes imgSettle { from { transform: scale(1.12); } to { transform: scale(1); } }
+@keyframes glowPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.6; } }
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+
+.page-in { animation: pageIn var(--dur-3) var(--ease) both; }
+
+.portrait { animation: portraitIn 900ms var(--ease) both; position: relative; }
+
+.portrait-glow {
+  position: absolute;
+  inset: -8% -6%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 2rem;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(79, 142, 247, 0.45), rgba(139, 92, 246, 0.25) 55%, transparent 75%);
+  filter: blur(40px);
+  animation: glowPulse 7s ease-in-out infinite;
+}
+
+.portrait-frame {
+  position: relative;
+  z-index: 1;
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform var(--dur-2) var(--ease);
+}
+
+.portrait-img { animation: imgSettle 1600ms var(--ease) both; transition: transform 900ms var(--ease); }
+.portrait-frame:hover .portrait-img { transform: scale(1.04); }
+
+.portrait-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.14) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 1100ms var(--ease);
+}
+.portrait-frame:hover .portrait-shine::after { transform: translateX(120%); }

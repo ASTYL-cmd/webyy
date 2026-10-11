@@ -10,13 +10,13 @@ import {
   Linkedin,
   Check,
 } from 'lucide-react';
-import { companyInfo } from '../config';
+import { companyInfo, web3forms } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function Contact() {
   const { ref, isVisible } = useScrollReveal();
   const { ref: formRef, isVisible: formVisible } = useScrollReveal();
-  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,10 +29,32 @@ export default function Contact() {
     e.preventDefault();
     setFormState('submitting');
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setFormState('success');
+    try {
+      const res = await fetch(web3forms.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: web3forms.accessKey,
+          subject: `New project enquiry from ${formData.name}`,
+          from_name: 'WEBYY Website',
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          project_type: formData.projectType,
+          message: formData.message,
+          botcheck: '',
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setFormState('success');
+        setFormData({ name: '', email: '', company: '', projectType: '', message: '' });
+      } else {
+        setFormState('error');
+      }
+    } catch {
+      setFormState('error');
+    }
   };
 
   const handleChange = (
@@ -193,7 +215,7 @@ export default function Contact() {
           </div>
 
           {/* Right - Form */}
-          <div ref={formRef} className={`reveal reveal-delay-2 ${formVisible ? 'visible' : ''}`}>
+          <div ref={formRef} className={`glass-card rounded-2xl p-6 md:p-10 reveal reveal-delay-2 ${formVisible ? 'visible' : ''}`}>
             {formState === 'success' ? (
               <div className="text-center p-8 md:p-10 bg-gradient-to-br from-blue-glow to-purple-glow border border-blue/20 rounded-2xl">
                 <div className="w-16 h-16 bg-green-500/20 border border-green-500/50 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -316,6 +338,12 @@ export default function Contact() {
                   {formState === 'submitting' ? 'Sending...' : 'Send Message'}
                   <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1" />
                 </button>
+                {formState === 'error' && (
+                  <p role="alert" className="mt-4 text-sm text-red-400">
+                    Something went wrong sending your message. Please try again, or reach us on
+                    WhatsApp or at {companyInfo.email}.
+                  </p>
+                )}
               </form>
             )}
           </div>

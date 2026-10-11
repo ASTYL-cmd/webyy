@@ -16,6 +16,7 @@ export default {
           glow: 'rgba(139,92,246,0.12)',
         },
         cyan: '#22D3EE',
+        accent: '#38B0F2',
         'white-custom': '#F8F8FC',
         border: 'rgba(248,248,252,0.07)',
         'border-bright': 'rgba(79,142,247,0.3)',
@@ -23,6 +24,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        display: ['"Sora"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       borderRadius: {
         DEFAULT: '16px',

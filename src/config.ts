@@ -23,6 +23,33 @@ export const companyInfo = {
   },
 };
 
+// Web3Forms access keys are public by design (they only allow sending to your inbox).
+export const web3forms = {
+  endpoint: 'https://api.web3forms.com/submit',
+  accessKey: 'f7c69e89-f1f4-4c8a-9b2a-f9e12c9fa39b',
+};
+
+export const siteUrl = 'https://webyyonline.netlify.app';
+
+// Direct asset paths. Files live in /public/assets (see scripts/fetch-assets.mjs).
+export const assets = {
+  logo: '/assets/webyy-logo.webp',
+  flyo: '/assets/projects/flyo-logo.webp',
+  astyl: '/assets/projects/astyl-logo.webp',
+  owner: '/assets/atul-mishra.webp',
+};
+
+export const owner = {
+  name: 'Atul Mishra',
+  role: 'Founder & Owner of WEBYY',
+  instagram: 'https://www.instagram.com/the.atul.mishra/',
+  instagramHandle: '@the.atul.mishra',
+  bio: [
+    'WEBYY is a website development brand helping businesses build a strong online presence through modern design, responsive websites, clean interfaces, performance and SEO-conscious development.',
+    'The focus is on quality, usability and continuous improvement, so every site we ship is something its owner can be proud of.',
+  ],
+};
+
 export const navigation = [
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#work' },
@@ -89,6 +116,8 @@ export const portfolio = [
     url: 'https://flyo.ai',
     icon: 'Globe',
     initials: 'F',
+    logo: assets.flyo,
+    alt: 'Flyo.ai logo',
   },
   {
     id: 2,
@@ -96,6 +125,8 @@ export const portfolio = [
     url: 'https://astyl.in',
     icon: 'ShoppingBag',
     initials: 'A',
+    logo: assets.astyl,
+    alt: 'Astyl logo',
   },
 ];
 
@@ -158,21 +189,31 @@ export const pricingPlans = [
   },
 ];
 
-export const team = [
+export interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  description: string;
+  avatar: string;
+  linkedin?: string;
+  instagram?: string;
+}
+
+export const team: TeamMember[] = [
   {
     id: 1,
     name: 'Saurabh Mishra',
     role: 'Lead Website Engineer',
     description: 'Responsible for website architecture, development, technical implementation, and project execution. Saurabh leads all engineering efforts at Webyy with a focus on performance and precision.',
-    linkedin: 'https://linkedin.com/in/saurabh-mishra',
+    linkedin: 'https://in.linkedin.com/in/sauravmishra2050?utm_source=share&utm_medium=member_mweb&utm_campaign=share_via&utm_content=profile',
     avatar: 'S',
   },
   {
     id: 2,
     name: 'Atul Mishra',
-    role: 'Business Manager',
+    role: 'Founder & Owner',
     description: 'Responsible for client communication, project coordination, business operations, and growth. Atul ensures every client relationship is built on trust, clarity, and results.',
-    linkedin: 'https://linkedin.com/in/atul-mishra',
+    instagram: 'https://www.instagram.com/the.atul.mishra/',
     avatar: 'A',
   },
 ];
@@ -181,23 +222,23 @@ export const processSteps = [
   {
     step: 1,
     icon: 'Compass',
-    title: 'Discovery',
+    title: 'Discover',
     description:
-      'We understand your business goals, target audience, and design preferences. This foundation ensures every decision serves your objectives.',
+      'We understand your business goals, target audience, and design preferences, then map out pages, structure, and content so there are no surprises later.',
   },
   {
     step: 2,
-    icon: 'Lightbulb',
-    title: 'Strategy',
-    description:
-      'We create a clear roadmap — pages, structure, tech stack, and content plan — so there are no surprises during execution.',
-  },
-  {
-    step: 3,
     icon: 'Pencil',
     title: 'Design',
     description:
-      'From wireframes to high-fidelity designs. Every screen is crafted to look stunning, communicate clearly, and guide users toward action.',
+      'From wireframes to high-fidelity designs. Every screen is crafted to look clean, communicate clearly, and guide users toward action.',
+  },
+  {
+    step: 3,
+    icon: 'Code',
+    title: 'Build',
+    description:
+      'Approved designs become clean, responsive, performance-minded code on modern tooling.',
   },
   {
     step: 4,
@@ -208,13 +249,14 @@ export const processSteps = [
   },
 ];
 
+// Technologies this site is actually built and deployed with (see package.json).
 export const tickerItems = [
-  'Website Design',
-  'Website Development',
-  'Landing Pages',
-  'SEO Optimization',
-  'UI/UX Design',
-  'Business Websites',
-  'Portfolio Websites',
-  'Website Redesign',
+  'React',
+  'TypeScript',
+  'Vite',
+  'Tailwind CSS',
+  'HTML5',
+  'CSS3',
+  'GitHub',
+  'Netlify',
 ];

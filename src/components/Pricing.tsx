@@ -68,10 +68,8 @@ function PricingCard({ plan, index }: PricingCardProps) {
   return (
     <div
       ref={ref}
-      className={`relative flex flex-col bg-surface border border-border p-8 md:p-10 transition-all duration-400 reveal ${isVisible ? 'visible' : ''} ${delayClass} ${
-        plan.highlight
-          ? 'border-blue/40 bg-gradient-to-b from-blue-glow/20 to-surface'
-          : 'hover:border-white-20'
+      className={`glass-card lift relative flex flex-col rounded-2xl overflow-hidden p-8 md:p-10 reveal ${isVisible ? 'visible' : ''} ${delayClass} ${
+        plan.highlight ? '!border-blue/40' : 'hover:border-white-20'
       }`}
     >
       {plan.highlight && (
@@ -165,14 +163,14 @@ export default function Pricing() {
         </div>
 
         {/* Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[1.5px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           {pricingPlans.map((plan, index) => (
             <PricingCard key={plan.id} plan={plan} index={index} />
           ))}
         </div>
 
         {/* Renewal disclaimer */}
-        <p className="text-center text-[0.72rem] text-white-20 mt-8">
+        <p className="text-center text-[0.72rem] text-white-60 mt-8">
           Note: Renewal charges are not included.
         </p>
       </div>
