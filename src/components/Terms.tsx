@@ -1,4 +1,4 @@
-import { ArrowLeft, FileText, Shield, Clock, Globe, Scale, Ban, RefreshCw, Users, AlertTriangle, Mail, Phone, MessageCircle, Instagram } from "lucide-react";
+import { ArrowLeft, FileText, Shield, Clock, Globe, Scale, Ban, RefreshCw, Users, AlertTriangle, Mail } from "lucide-react";
 
 export default function Terms() {
   return (
@@ -327,15 +327,15 @@ export default function Terms() {
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-[6px] h-[6px] bg-blue rounded-full flex-shrink-0"></div>
-                      <span className="text-white-custom font-medium">Phone: +91 98765 43210</span>
+                      <span className="text-white-custom font-medium">Phone: +91 91358 88913</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-[6px] h-[6px] bg-blue rounded-full flex-shrink-0"></div>
-                      <span className="text-white-custom font-medium">WhatsApp: +91 98765 43210</span>
+                      <span className="text-white-custom font-medium">WhatsApp: +91 91358 88913</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-[6px] h-[6px] bg-blue rounded-full flex-shrink-0"></div>
-                      <span className="text-white-custom font-medium">Instagram: @webyy</span>
+                      <span className="text-white-custom font-medium">Instagram: @_webyy</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-[6px] h-[6px] bg-blue rounded-full flex-shrink-0"></div>

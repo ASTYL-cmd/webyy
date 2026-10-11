@@ -1,5 +1,6 @@
-import { Check, ArrowUpRight } from 'lucide-react';
-import { pricingPlans } from '../config';
+import { useEffect, useState } from 'react';
+import { Check, ArrowUpRight, MessageCircle } from 'lucide-react';
+import { pricingPlans, companyInfo } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 interface PricingCardProps {
@@ -7,9 +8,62 @@ interface PricingCardProps {
   index: number;
 }
 
+function useCountUp(target: number, start: boolean, duration = 1400) {
+  const [value, setValue] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!start) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      setValue(target);
+      return;
+    }
+
+    let raf: number;
+    const startTime = performance.now();
+    const startVal = Math.round(target * 1.8);
+
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = Math.round(startVal - (startVal - target) * eased);
+      setValue(current);
+      if (t < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        setValue(target);
+      }
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [start, target, duration]);
+
+  return value;
+}
+
 function PricingCard({ plan, index }: PricingCardProps) {
   const { ref, isVisible } = useScrollReveal();
+  const [animateStart, setAnimateStart] = useState(false);
   const delayClass = index === 1 ? 'reveal-delay-1' : index === 2 ? 'reveal-delay-2' : '';
+
+  useEffect(() => {
+    if (!isVisible) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      setAnimateStart(true);
+      return;
+    }
+    const timer = setTimeout(() => setAnimateStart(true), 200 + index * 150);
+    return () => clearTimeout(timer);
+  }, [isVisible, index]);
+
+  const animatedPrice = useCountUp(plan.price, animateStart);
+  const displayPrice = animatedPrice ?? plan.price;
+
+  const isAdvanced = plan.cta === 'Message for More Details';
 
   return (
     <div
@@ -26,7 +80,7 @@ function PricingCard({ plan, index }: PricingCardProps) {
 
       {plan.highlight && (
         <div className="inline-flex self-start items-center gap-1.5 py-1 px-3 bg-blue/10 border border-blue/30 rounded-full text-[0.6rem] font-semibold tracking-[0.15em] uppercase text-blue mb-4">
-          Most Popular
+          Recommended
         </div>
       )}
 
@@ -39,12 +93,9 @@ function PricingCard({ plan, index }: PricingCardProps) {
       <div className="mb-2">
         <div className="flex items-end gap-1">
           <span className="text-[0.9rem] font-medium text-white-60 mb-1">₹</span>
-          <span className="text-[3rem] md:text-[3.5rem] font-extrabold tracking-[-0.04em] leading-[1] gradient-text">
-            {plan.price.toLocaleString('en-IN')}
+          <span className="text-[3rem] md:text-[3.5rem] font-extrabold tracking-[-0.04em] leading-[1] gradient-text tabular-nums">
+            {displayPrice.toLocaleString('en-IN')}
           </span>
-        </div>
-        <div className="text-[0.72rem] text-white-60 mt-1 tracking-wide">
-          Duration: {plan.duration}
         </div>
       </div>
 
@@ -52,8 +103,8 @@ function PricingCard({ plan, index }: PricingCardProps) {
 
       {/* Features */}
       <ul className="space-y-3 mb-8 flex-1">
-        {plan.features.map((feature) => (
-          <li key={feature} className="flex items-start gap-3">
+        {plan.features.map((feature, i) => (
+          <li key={i} className="flex items-start gap-3">
             <div className="w-4 h-4 rounded-full bg-blue/15 border border-blue/30 flex items-center justify-center flex-shrink-0 mt-0.5">
               <Check size={9} className="text-blue" />
             </div>
@@ -63,17 +114,29 @@ function PricingCard({ plan, index }: PricingCardProps) {
       </ul>
 
       {/* CTA */}
-      <a
-        href="#contact"
-        className={`inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full text-[0.8rem] font-semibold tracking-wide transition-all duration-300 ${
-          plan.highlight
-            ? 'bg-gradient-primary text-white btn-hover-lift shadow-glow-blue'
-            : 'bg-white-04 border border-border text-white hover:bg-white-08 hover:border-white-20'
-        }`}
-      >
-        Start This Plan
-        <ArrowUpRight size={14} />
-      </a>
+      {isAdvanced ? (
+        <a
+          href={`https://wa.me/${companyInfo.whatsapp}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full text-[0.8rem] font-semibold tracking-wide transition-all duration-300 bg-white-04 border border-border text-white hover:bg-white-08 hover:border-white-20"
+        >
+          <MessageCircle size={14} />
+          {plan.cta}
+        </a>
+      ) : (
+        <a
+          href="#contact"
+          className={`inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full text-[0.8rem] font-semibold tracking-wide transition-all duration-300 ${
+            plan.highlight
+              ? 'bg-gradient-primary text-white btn-hover-lift shadow-glow-blue'
+              : 'bg-white-04 border border-border text-white hover:bg-white-08 hover:border-white-20'
+          }`}
+        >
+          {plan.cta}
+          <ArrowUpRight size={14} />
+        </a>
+      )}
     </div>
   );
 }
@@ -108,9 +171,9 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Bottom note */}
+        {/* Renewal disclaimer */}
         <p className="text-center text-[0.72rem] text-white-20 mt-8">
-          All plans include a free consultation. Custom enterprise pricing available on request.
+          Note: Renewal charges are not included.
         </p>
       </div>
     </section>

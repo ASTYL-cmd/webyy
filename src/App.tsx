@@ -4,7 +4,6 @@ import Ticker from './components/Ticker';
 import Services from './components/Services';
 import Work from './components/Work';
 import About from './components/About';
-import Testimonials from './components/Testimonials';
 import Process from './components/Process';
 import Pricing from './components/Pricing';
 import Team from './components/Team';
@@ -22,7 +21,6 @@ function HomePage() {
         <Services />
         <Work />
         <About />
-        <Testimonials />
         <Process />
         <Pricing />
         <Team />

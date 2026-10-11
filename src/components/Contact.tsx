@@ -88,8 +88,8 @@ export default function Contact() {
 
               {/* Phone */}
               <a
-                href={`tel:${companyInfo.phone}`}
-                className="flex items-center gap-4 group"
+                href={companyInfo.phoneTel}
+                className="flex items-center gap-4 group no-underline"
               >
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-glow to-purple-glow border border-border rounded-lg flex items-center justify-center flex-shrink-0 transition-all group-hover:border-blue">
                   <Phone size={18} className="text-blue" />
@@ -98,8 +98,8 @@ export default function Contact() {
                   <div className="text-[0.65rem] text-blue tracking-[0.15em] uppercase mb-1">
                     Phone
                   </div>
-                  <div className="text-white group-hover:text-blue transition-colors">
-                    {companyInfo.phone}
+                  <div className="text-white group-hover:text-blue transition-colors no-underline">
+                    {companyInfo.phoneDisplay}
                   </div>
                 </div>
               </a>
@@ -138,8 +138,8 @@ export default function Contact() {
                   <div className="text-[0.65rem] text-blue tracking-[0.15em] uppercase mb-1">
                     Instagram
                   </div>
-                  <div className="text-white group-hover:text-pink-400 transition-colors">
-                    @webyy
+                  <div className="text-white group-hover:text-pink-400 transition-colors no-underline">
+                    {companyInfo.social.instagramHandle}
                   </div>
                 </div>
               </a>
