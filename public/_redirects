@@ -1,2 +1,6 @@
-/founder  /index.html  200
-/founder/  /index.html  200
+/founder   /about  301
+/founder/  /about  301
+/about     /index.html  200
+/about/    /index.html  200
+/projects  /index.html  200
+/projects/ /index.html  200
