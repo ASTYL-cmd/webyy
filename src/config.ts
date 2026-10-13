@@ -4,7 +4,7 @@
 
 export const companyInfo = {
   name: 'Webyy',
-  tagline: 'Digital Experience Studio',
+  tagline: 'Website Development Company',
   founded: '2023',
   description: 'Premium website design and development agency crafting stunning, high-performance websites for businesses, startups, and professionals.',
   email: 'contact.webyy@gmail.com',
@@ -17,8 +17,6 @@ export const companyInfo = {
   social: {
     instagram: 'https://www.instagram.com/_webyy/',
     instagramHandle: '@_webyy',
-    twitter: 'https://twitter.com/webyy',
-    linkedin: 'https://linkedin.com/company/webyy',
     dribbble: 'https://dribbble.com/webyy',
   },
 };
@@ -31,31 +29,33 @@ export const web3forms = {
 
 export const siteUrl = 'https://webyyonline.netlify.app';
 
-// Direct asset paths. Files live in /public/assets (see scripts/fetch-assets.mjs).
+// Founder photo: hosted image supplied for this site.
 export const assets = {
-  logo: '/assets/webyy-logo.webp',
-  flyo: '/assets/projects/flyo-logo.webp',
-  astyl: '/assets/projects/astyl-logo.webp',
-  owner: '/assets/atul-mishra.webp',
+  owner: 'https://i.ibb.co/prbPWGQp/file-000000008c408211975c2ed96b7d1d79.png',
 };
 
 export const owner = {
   name: 'Atul Mishra',
   role: 'Founder & Owner of WEBYY',
-  instagram: 'https://www.instagram.com/the.atul.mishra/',
-  instagramHandle: '@the.atul.mishra',
+  // Founder copy below reuses wording that was already live on the site.
+  // Replace/extend these lines when Atul supplies his own words.
   bio: [
     'WEBYY is a website development brand helping businesses build a strong online presence through modern design, responsive websites, clean interfaces, performance and SEO-conscious development.',
     'The focus is on quality, usability and continuous improvement, so every site we ship is something its owner can be proud of.',
   ],
+  role_description:
+    'Responsible for client communication, project coordination, business operations, and growth. Atul ensures every client relationship is built on trust, clarity, and results.',
 };
 
+// Absolute hrefs so the same menu works on every page.
+// Hash links ("/#services") scroll on the homepage and navigate back to it from other pages.
 export const navigation = [
-  { label: 'Services', href: '#services' },
-  { label: 'Work', href: '#work' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Team', href: '#team' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Pricing', href: '/#pricing' },
+  { label: 'Our Projects', href: '/projects' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export const services = [
@@ -109,30 +109,72 @@ export const services = [
   },
 ];
 
-export const portfolio = [
+export interface Project {
+  id: number;
+  name: string;
+  category: string;
+  description: string;
+  logo: string;
+  alt: string;
+  /** Optional verified destination. Leave undefined for an informational card (no link is rendered). */
+  url?: string;
+  /** Optional: render a transparent logo as a single-colour white silhouette (only for dark artwork on a transparent PNG). */
+  silhouette?: boolean;
+}
+
+// Logos are the exact hosted images supplied for this site.
+export const projects: Project[] = [
   {
     id: 1,
-    title: 'Flyo.ai',
-    url: 'https://flyo.ai',
-    icon: 'Globe',
-    initials: 'F',
-    logo: assets.flyo,
-    alt: 'Flyo.ai logo',
+    name: 'ASTYL',
+    category: 'T-shirt Brand',
+    description:
+      'A T-shirt brand focused on presenting apparel with a distinctive brand identity and a modern visual style.',
+    logo: 'https://i.ibb.co/B21HrV3v/Black-Beige-Modern-Typography-Monogram-Logo-1-1-pdf-20260126-204857-0000.png',
+    alt: 'ASTYL T-shirt brand logo',
   },
   {
     id: 2,
-    title: 'Astyl',
-    url: 'https://astyl.in',
-    icon: 'ShoppingBag',
-    initials: 'A',
-    logo: assets.astyl,
-    alt: 'Astyl logo',
+    name: 'Flyo.ai',
+    category: 'AI Travel Assistant App',
+    description:
+      'An AI-powered travel assistant concept designed to help users explore destinations and plan travel more conveniently.',
+    logo: 'https://i.ibb.co/N2W61sJy/IMG-ca5b15f6-c6b3-41e1-9e0f-2536f4b6074b.png',
+    alt: 'Flyo.ai AI travel assistant logo',
+  },
+  {
+    id: 3,
+    name: "Mother's Muffins",
+    category: 'Bakery Shop',
+    description:
+      'A bakery brand focused on baked treats, a welcoming identity, and an appetizing customer experience.',
+    logo: 'https://i.ibb.co/M5Zc9gK4/Mother-s-muffins-20261012-105553-0000.png',
+    alt: "Mother's Muffins bakery logo",
+  },
+  {
+    id: 4,
+    name: 'Stylin',
+    category: 'Fashion Brand',
+    description:
+      'A fashion brand built around style, contemporary aesthetics, and a recognizable visual identity.',
+    logo: 'https://i.ibb.co/RpY1JGWp/Stylin-20261012-105633-0000.png',
+    alt: 'Stylin fashion brand logo',
+  },
+  {
+    id: 5,
+    name: 'HJP Studio',
+    category: 'Photography Studio',
+    description:
+      'A photography studio brand focused on visual storytelling, photography, and creative presentation.',
+    logo: 'https://i.ibb.co/35kYYcrP/HJP-Studio-20261012-105709-0000.png',
+    alt: 'HJP Studio photography studio logo',
   },
 ];
 
 export const pricingPlans = [
   {
     id: 1,
+    slug: 'basic',
     name: 'Basic',
     price: 7000,
     description: 'Perfect for freelancers, consultants, and small businesses getting started online.',
@@ -149,6 +191,7 @@ export const pricingPlans = [
   },
   {
     id: 2,
+    slug: 'standard',
     name: 'Standard',
     price: 14000,
     description: 'For growing businesses that need a polished, high-performing online presence.',
@@ -168,6 +211,7 @@ export const pricingPlans = [
   },
   {
     id: 3,
+    slug: 'advanced',
     name: 'Advanced',
     price: 35000,
     description: 'For established businesses and brands that demand the best digital experience.',
@@ -184,7 +228,7 @@ export const pricingPlans = [
       '2 Years Hosting Support',
       '1 Year Free Domain',
     ],
-    cta: 'Message for More Details',
+    cta: 'Start This Plan',
     highlight: false,
   },
 ];
@@ -196,7 +240,6 @@ export interface TeamMember {
   description: string;
   avatar: string;
   linkedin?: string;
-  instagram?: string;
 }
 
 export const team: TeamMember[] = [
@@ -211,9 +254,8 @@ export const team: TeamMember[] = [
   {
     id: 2,
     name: 'Atul Mishra',
-    role: 'Founder & Owner',
+    role: 'Junior Engineer',
     description: 'Responsible for client communication, project coordination, business operations, and growth. Atul ensures every client relationship is built on trust, clarity, and results.',
-    instagram: 'https://www.instagram.com/the.atul.mishra/',
     avatar: 'A',
   },
 ];
