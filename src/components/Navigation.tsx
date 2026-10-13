@@ -1,15 +1,22 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { X, Instagram, Twitter, Linkedin } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 import { companyInfo, navigation } from '../config';
-import Logo from './Logo';
+import Wordmark from './Wordmark';
+import CtaButton from './CtaButton';
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [active, setActive] = useState<string | null>(null);
+  const [section, setSection] = useState<string | null>(null);
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  const onHome = path === '/';
+  // Key of the nav item to highlight: a section ("/#services") on the homepage, otherwise the page route.
+  const active = onHome ? (section ? `/#${section}` : '/') : path;
   const navRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const indicatorRef = useRef<HTMLLIElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   // Glass-on-scroll + scroll-progress bar: one passive, rAF-throttled listener.
   useEffect(() => {
@@ -35,21 +42,37 @@ export default function Navigation() {
     };
   }, []);
 
-  // Active section tracking
+  // Active section tracking (homepage only; other pages highlight by route)
   useEffect(() => {
-    const ids = navigation.map((n) => n.href.slice(1));
+    if (!onHome) return;
+    const ids = navigation.filter((n) => n.href.startsWith('/#')).map((n) => n.href.slice(2));
     const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
+          if (e.isIntersecting) setSection(e.target.id);
         });
       },
       { rootMargin: '-45% 0px -50% 0px' }
     );
     els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+    // Back at the very top: highlight Home again
+    const onTop = () => window.scrollY < 200 && setSection(null);
+    window.addEventListener('scroll', onTop, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', onTop);
+    };
+  }, [onHome]);
+
+  // "Home" while already on the homepage: scroll to top instead of reloading
+  const handleClick = (href: string, close?: boolean) => (e: React.MouseEvent) => {
+    if (close) setMobileOpen(false);
+    if (href === '/' && onHome) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   // Slide the indicator under the active link (transform only)
   useLayoutEffect(() => {
@@ -57,7 +80,7 @@ export default function Navigation() {
     const ind = indicatorRef.current;
     if (!list || !ind) return;
     const place = () => {
-      const link = active ? list.querySelector<HTMLElement>(`a[href="#${active}"]`) : null;
+      const link = list.querySelector<HTMLElement>(`a[data-nav="${active}"]`);
       if (!link) {
         ind.style.opacity = '0';
         return;
@@ -70,14 +93,28 @@ export default function Navigation() {
     return () => window.removeEventListener('resize', place);
   }, [active]);
 
+  // Mobile menu: lock background scroll, Escape closes, focus moves in on open and back to the button on close,
+  // and the menu closes itself if the viewport grows past the mobile breakpoint.
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (!mobileOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const focusTimer = window.setTimeout(() => menuRef.current?.querySelector<HTMLElement>('a')?.focus(), 80);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileOpen(false);
+        burgerRef.current?.focus();
+      }
+    };
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const onMq = () => mq.matches && setMobileOpen(false);
+    document.addEventListener('keydown', onKey);
+    mq.addEventListener('change', onMq);
     return () => {
-      document.body.style.overflow = '';
+      window.clearTimeout(focusTimer);
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener('keydown', onKey);
+      mq.removeEventListener('change', onMq);
     };
   }, [mobileOpen]);
 
@@ -97,20 +134,22 @@ export default function Navigation() {
         />
 
         {/* Logo */}
-        <a href="#hero" aria-label="WEBYY home" className="flex items-center">
-          <Logo className="h-10 lg:h-12" />
+        <a href="/" onClick={handleClick('/')} aria-label="Webyy home" className="flex items-center">
+          <Wordmark className="text-[1.6rem] lg:text-[1.9rem]" />
         </a>
 
         {/* Desktop Navigation */}
-        <ul ref={listRef} className="hidden lg:flex gap-10 list-none relative">
+        <ul ref={listRef} className="hidden lg:flex gap-8 xl:gap-10 list-none relative">
           <li ref={indicatorRef} className="nav-indicator" aria-hidden="true" role="presentation" style={{ opacity: 0 }} />
           {navigation.map((item) => (
             <li key={item.href}>
               <a
                 href={item.href}
-                aria-current={active === item.href.slice(1) ? 'true' : undefined}
+                data-nav={item.href}
+                onClick={handleClick(item.href)}
+                aria-current={active === item.href ? (item.href.includes('#') ? 'true' : 'page') : undefined}
                 className={`text-[0.72rem] font-normal tracking-[0.1em] uppercase hover:text-white transition-colors ${
-                  active === item.href.slice(1) ? 'text-white' : 'text-white-60'
+                  active === item.href ? 'text-white' : 'text-white-60'
                 }`}
               >
                 {item.label}
@@ -133,80 +172,60 @@ export default function Navigation() {
           </a>
 
           {/* CTA Button */}
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 py-2.5 px-5 text-[0.72rem] font-medium tracking-[0.08em] bg-gradient-to-br from-blue-glow to-purple-glow border border-border-bright text-white rounded-full transition-all duration-300 hover:from-blue-glow/50 hover:to-purple-glow/50 hover:border-blue/60 hover:-translate-y-0.5"
-          >
+          <CtaButton href="/#contact" size="sm">
             Start a Project
-          </a>
+          </CtaButton>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile menu button: one toggle that morphs hamburger <-> X (stays above the menu panel) */}
         <button
-          onClick={() => setMobileOpen(true)}
-          className="lg:hidden flex flex-col gap-1 p-1"
-          aria-label="Open menu"
+          ref={burgerRef}
+          type="button"
+          onClick={() => setMobileOpen((v) => !v)}
+          className="burger lg:hidden"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-menu"
         >
-          <span className="w-6 h-[1px] bg-white-60 block transition-all" />
-          <span className="w-6 h-[1px] bg-white-60 block transition-all" />
-          <span className="w-6 h-[1px] bg-white-60 block transition-all" />
+          <span className="burger-lines" aria-hidden="true">
+            <span className="burger-line" />
+            <span className="burger-line" />
+            <span className="burger-line" />
+          </span>
         </button>
       </nav>
 
-      {/* Mobile Drawer */}
+      {/* Mobile menu panel (sits under the header, so the header's toggle is always the close control) */}
       <div
-        className={`glass fixed inset-0 z-[60] bg-void/95 flex flex-col items-center justify-center gap-8 transition-transform duration-500 ease-out ${
-          mobileOpen ? 'translate-x-0' : 'translate-x-full invisible'
-        }`}
+        id="mobile-menu"
+        ref={menuRef}
+        className={`mobile-menu ${mobileOpen ? 'is-open' : ''}`}
         aria-hidden={!mobileOpen}
       >
-        <div className="absolute top-5 left-[4vw]">
-          <Logo className="h-10" />
-        </div>
-        <button
-          onClick={() => setMobileOpen(false)}
-          className="absolute top-6 right-6 p-2 text-white-60 hover:text-white transition-colors"
-          aria-label="Close menu"
-        >
-          <X size={24} />
-        </button>
-
-        {navigation.map((item) => (
+        {navigation.map((item, i) => (
           <a
             key={item.href}
             href={item.href}
-            onClick={() => setMobileOpen(false)}
-            className="text-2xl font-bold tracking-tight text-white hover:text-blue transition-colors"
+            style={{ '--i': i } as React.CSSProperties}
+            onClick={handleClick(item.href, true)}
+            aria-current={active === item.href ? (item.href.includes('#') ? 'true' : 'page') : undefined}
+            className={`mobile-item text-2xl font-bold tracking-tight transition-colors hover:text-blue ${
+              active === item.href ? 'text-blue' : 'text-white'
+            }`}
           >
             {item.label}
           </a>
         ))}
 
-        {/* Social Icons in Mobile */}
-        <div className="flex gap-3 mt-8">
+        <div className="mobile-item mt-6 flex gap-3" style={{ '--i': navigation.length } as React.CSSProperties}>
           <a
             href={companyInfo.social.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 border border-border rounded-full flex items-center justify-center text-white-60 hover:border-blue hover:text-blue transition-all"
+            aria-label="Instagram"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-white-60 transition-all hover:border-blue hover:text-blue"
           >
             <Instagram size={18} />
-          </a>
-          <a
-            href={companyInfo.social.twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-10 h-10 border border-border rounded-full flex items-center justify-center text-white-60 hover:border-blue hover:text-blue transition-all"
-          >
-            <Twitter size={18} />
-          </a>
-          <a
-            href={companyInfo.social.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-10 h-10 border border-border rounded-full flex items-center justify-center text-white-60 hover:border-blue hover:text-blue transition-all"
-          >
-            <Linkedin size={18} />
           </a>
         </div>
       </div>

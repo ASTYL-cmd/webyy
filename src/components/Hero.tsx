@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
-import Logo from './Logo';
+import Wordmark from './Wordmark';
+import CtaButton from './CtaButton';
 import { hasFinePointer, prefersReducedMotion, useMagneticEffect } from '../hooks/useScrollReveal';
 
 export default function Hero() {
@@ -152,7 +152,7 @@ export default function Hero() {
         }`}
         aria-hidden={loaded}
       >
-        <Logo height={44} />
+        <Wordmark className="text-[2.75rem]" />
         <div className="w-52 h-[1px] bg-white-08 relative overflow-hidden">
           <div className="absolute left-0 top-0 h-full bg-gradient-primary animate-[loadFill_1.4s_ease_forwards]" />
         </div>
@@ -181,11 +181,6 @@ export default function Hero() {
         {/* Content */}
         <div className="relative z-[2] w-full max-w-[1300px] mx-auto grid grid-cols-1 items-center text-center">
           <div>
-            <div className="glass-card inline-flex items-center gap-2 py-2 px-4 rounded-full text-[0.68rem] font-medium tracking-[0.15em] uppercase text-white-60 mb-8 md:mb-10 animate-fade-up opacity-0 [animation-delay:0.2s]">
-              <span className="w-2 h-2 rounded-full bg-cyan animate-pulse-custom" />
-              Available for New Projects
-            </div>
-
             <h1
               className="text-[clamp(2.75rem,7.5vw,6.5rem)] font-bold leading-[0.98] tracking-[-0.04em] mb-6 md:mb-8"
               aria-label="We Build Digital Experiences"
@@ -210,20 +205,15 @@ export default function Hero() {
 
             <div className="flex gap-4 justify-center flex-wrap items-center">
               <div ref={magneticRef} className="animate-fade-up opacity-0 [animation-delay:1.05s]">
-                <a
-                  href="#work"
-                  className="inline-flex items-center gap-2 py-4 px-8 text-[0.82rem] font-semibold tracking-wide bg-gradient-primary text-white rounded-full btn-hover-lift shadow-glow-blue hover:shadow-glow-blue-lg group"
-                >
-                  View Our Work
-                  <ChevronDown className="w-4 h-4 rotate-[-90deg] group-hover:translate-x-1 transition-transform" />
-                </a>
+                <CtaButton href="/#contact" variant="primary">
+                  Start a Project
+                </CtaButton>
               </div>
-              <a
-                href="#contact"
-                className="glass-card inline-flex items-center gap-2 py-4 px-8 text-[0.82rem] font-normal tracking-wide text-white rounded-full btn-hover-lift hover:border-white-20 animate-fade-up opacity-0 [animation-delay:1.2s]"
-              >
-                Start a Project
-              </a>
+              <div className="animate-fade-up opacity-0 [animation-delay:1.2s]">
+                <CtaButton href="/projects" variant="glass">
+                  See Our Projects
+                </CtaButton>
+              </div>
             </div>
           </div>
 

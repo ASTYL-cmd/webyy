@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { assets } from '../config';
 import { hasFinePointer, prefersReducedMotion } from '../hooks/useScrollReveal';
 import AssetImage from './AssetImage';
@@ -6,6 +6,8 @@ import AssetImage from './AssetImage';
 /** Rectangular 4:5 portrait in a glass frame: glow, settle-in, shine sweep, soft pointer tilt. */
 export default function PortraitFrame({ priority = false }: { priority?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+  // Frame takes the photo's own aspect ratio so nothing is cropped (clamped so extreme shapes can't break the layout).
+  const [ratio, setRatio] = useState(4 / 5);
 
   useEffect(() => {
     const el = ref.current;
@@ -39,14 +41,22 @@ export default function PortraitFrame({ priority = false }: { priority?: boolean
     <div className="portrait w-full max-w-[420px] mx-auto">
       <div className="portrait-glow" aria-hidden="true" />
       <div ref={ref} className="portrait-frame glass-card rounded-[1.75rem] p-2.5">
-        <div className="portrait-shine relative aspect-[4/5] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 flex items-center justify-center">
+        <div
+          className="portrait-shine relative w-full overflow-hidden rounded-[1.25rem] bg-surface-2 flex items-center justify-center"
+          style={{ aspectRatio: String(ratio) }}
+        >
           <AssetImage
             src={assets.owner}
-            alt="Atul Mishra, Founder & Owner of WEBYY"
+            alt="Portrait of Atul Mishra"
             width={800}
             height={1000}
             fit="cover"
             priority={priority}
+            onLoad={(img) => {
+              if (img.naturalWidth && img.naturalHeight) {
+                setRatio(Math.min(1.2, Math.max(0.55, img.naturalWidth / img.naturalHeight)));
+              }
+            }}
             className="portrait-img absolute inset-0 w-full h-full object-top"
             fallback={
               <span className="font-display text-7xl font-bold gradient-text" aria-hidden="true">

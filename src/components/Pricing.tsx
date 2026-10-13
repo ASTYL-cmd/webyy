@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Check, ArrowUpRight, MessageCircle } from 'lucide-react';
+import { Check, MessageCircle } from 'lucide-react';
 import { pricingPlans, companyInfo } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { selectPlan } from '../lib/enquiry';
+import { scrollToContact } from '../lib/contact';
+import CtaButton from './CtaButton';
 
 interface PricingCardProps {
   plan: (typeof pricingPlans)[0];
@@ -63,7 +66,15 @@ function PricingCard({ plan, index }: PricingCardProps) {
   const animatedPrice = useCountUp(plan.price, animateStart);
   const displayPrice = animatedPrice ?? plan.price;
 
-  const isAdvanced = plan.cta === 'Message for More Details';
+  // Publish the chosen plan to the contact form, then scroll to it. href is the no-JS / other-page fallback.
+  const startPlan = (e: React.MouseEvent) => {
+    selectPlan(plan.slug);
+    if (document.getElementById('contact')) {
+      e.preventDefault();
+      history.pushState(null, '', '/#contact');
+      scrollToContact();
+    }
+  };
 
   return (
     <div
@@ -111,28 +122,24 @@ function PricingCard({ plan, index }: PricingCardProps) {
         ))}
       </ul>
 
-      {/* CTA */}
-      {isAdvanced ? (
+      {/* CTA: preselects this plan in the enquiry form */}
+      <CtaButton
+        href={`/?plan=${plan.slug}#contact`}
+        variant={plan.highlight ? 'primary' : 'glass'}
+        onClick={startPlan}
+        className="w-full"
+      >
+        {plan.cta}
+      </CtaButton>
+      {plan.slug === 'advanced' && (
         <a
           href={`https://wa.me/${companyInfo.whatsapp}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full text-[0.8rem] font-semibold tracking-wide transition-all duration-300 bg-white-04 border border-border text-white hover:bg-white-08 hover:border-white-20"
+          className="mt-4 inline-flex items-center justify-center gap-2 text-[0.75rem] text-white-60 transition-colors hover:text-white"
         >
-          <MessageCircle size={14} />
-          {plan.cta}
-        </a>
-      ) : (
-        <a
-          href="#contact"
-          className={`inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full text-[0.8rem] font-semibold tracking-wide transition-all duration-300 ${
-            plan.highlight
-              ? 'bg-gradient-primary text-white btn-hover-lift shadow-glow-blue'
-              : 'bg-white-04 border border-border text-white hover:bg-white-08 hover:border-white-20'
-          }`}
-        >
-          {plan.cta}
-          <ArrowUpRight size={14} />
+          <MessageCircle size={13} aria-hidden="true" />
+          Prefer to chat? Message us on WhatsApp
         </a>
       )}
     </div>

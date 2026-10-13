@@ -1,3 +1,6 @@
+import { companyInfo } from "../config";
+import Wordmark from "./Wordmark";
+import CtaButton from "./CtaButton";
 import { ArrowLeft, FileText, Shield, Clock, Globe, Scale, Ban, RefreshCw, Users, AlertTriangle, Mail } from "lucide-react";
 
 export default function Terms() {
@@ -13,8 +16,8 @@ export default function Terms() {
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </a>
-          <a href="/" className="text-[0.9rem] font-extrabold tracking-[0.3em] uppercase bg-gradient-to-r from-blue to-purple bg-clip-text text-transparent">
-            Webyy
+          <a href="/" aria-label="Webyy home">
+            <Wordmark className="text-[1.5rem]" />
           </a>
         </div>
       </header>
@@ -327,11 +330,11 @@ export default function Terms() {
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-[6px] h-[6px] bg-blue rounded-full flex-shrink-0"></div>
-                      <span className="text-white-custom font-medium">Phone: +91 91358 88913</span>
+                      <span className="text-white-custom font-medium">Phone: {companyInfo.phoneDisplay}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-[6px] h-[6px] bg-blue rounded-full flex-shrink-0"></div>
-                      <span className="text-white-custom font-medium">WhatsApp: +91 91358 88913</span>
+                      <span className="text-white-custom font-medium">WhatsApp: {companyInfo.phoneDisplay}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-[6px] h-[6px] bg-blue rounded-full flex-shrink-0"></div>
@@ -354,12 +357,12 @@ export default function Terms() {
                 By using Webyy, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.
               </p>
               <div className="flex gap-3 justify-center flex-wrap">
-                <a href="/" className="inline-flex items-center gap-2 px-7 py-[14px] bg-gradient-to-r from-blue to-purple text-white-custom text-[0.8rem] font-semibold tracking-[0.05em] rounded-full hover:translate-y-[-2px] hover:shadow-[0_10px_30px_rgba(79,142,247,0.3)] transition-all duration-300">
+                <CtaButton href="/" variant="primary">
                   Return to Home
-                </a>
-                <a href="/privacy" className="inline-flex items-center gap-2 px-7 py-[14px] bg-[rgba(248,248,252,0.04)] border border-[rgba(248,248,252,0.07)] text-white-custom text-[0.8rem] font-medium tracking-[0.05em] rounded-full hover:bg-[rgba(248,248,252,0.08)] hover:border-[rgba(248,248,252,0.2)] transition-all duration-300">
+                </CtaButton>
+                <CtaButton href="/privacy" variant="glass">
                   Privacy Policy
-                </a>
+                </CtaButton>
               </div>
             </div>
           </div>

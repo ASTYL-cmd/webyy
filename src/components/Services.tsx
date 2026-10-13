@@ -1,4 +1,4 @@
-import { Globe, Code, RefreshCw, LayoutGrid as Layout, Briefcase, Search, ArrowUpRight } from 'lucide-react';
+import { Globe, Code, RefreshCw, LayoutGrid as Layout, Briefcase, Search } from 'lucide-react';
 import { services } from '../config';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import type { LucideIcon } from 'lucide-react';
@@ -27,17 +27,18 @@ function ServiceCard({ service, index }: ServiceCardProps) {
     <div
       ref={ref}
       data-spot
-      className={`spot glass-card lift rounded-2xl px-8 md:px-10 py-10 md:py-12 group ${
+      className={`spot fx-card glass-card rounded-2xl px-8 md:px-10 py-10 md:py-12 group ${
         isVisible ? 'visible' : ''
       } ${delayClass} reveal`}
     >
+      <span className="fx-glow" aria-hidden="true" />
       {/* Number */}
       <div className="text-[0.65rem] font-semibold tracking-[0.2em] text-blue mb-8 tabular-nums">
         {String(service.id).padStart(2, '0')}
       </div>
 
       {/* Icon */}
-      <div className="w-14 h-14 bg-gradient-to-br from-blue-glow to-purple-glow border border-blue/20 rounded-lg flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-105 group-hover:shadow-glow-blue">
+      <div className="fx-icon w-14 h-14 bg-gradient-to-br from-blue-glow to-purple-glow border border-blue/20 rounded-lg flex items-center justify-center mb-6">
         {Icon && <Icon size={22} className="text-blue" />}
       </div>
 
@@ -59,10 +60,6 @@ function ServiceCard({ service, index }: ServiceCardProps) {
         ))}
       </div>
 
-      {/* Arrow */}
-      <div className="absolute bottom-8 right-8 w-10 h-10 border border-border rounded-full flex items-center justify-center text-white-60 transition-all duration-300 group-hover:border-blue group-hover:text-blue group-hover:shadow-glow-purple">
-        <ArrowUpRight size={16} />
-      </div>
     </div>
   );
 }
