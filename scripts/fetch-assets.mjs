@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Downloads the four brand images from their ibb.co pages into /public/assets.
+// Downloads the founder photo from their ibb.co pages into /public/assets.
 // Run locally (needs internet + Node 18+):   node scripts/fetch-assets.mjs
 // Optional WebP conversion if `sharp` is installed:   npm i --no-save sharp
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -9,9 +9,6 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'assets');
 
 const ASSETS = [
-  { page: 'https://ibb.co/HLx924Xr', out: 'webyy-logo' },
-  { page: 'https://ibb.co/4BqXyJ9', out: 'projects/flyo-logo' },
-  { page: 'https://ibb.co/DHZ59t2P', out: 'projects/astyl-logo' },
   { page: 'https://ibb.co/NdXvP47d', out: 'atul-mishra', maxWidth: 800 },
 ];
 
