@@ -7,7 +7,7 @@
   <meta name="description" content="Terms and Conditions for using Webyy website development services.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@700&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
@@ -18,7 +18,9 @@
     ::-webkit-scrollbar-thumb{background:rgba(79,142,247,0.3);border-radius:3px}
     ::-webkit-scrollbar-thumb:hover{background:#4F8EF7}
     .nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:20px 4vw;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,5,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(248,248,252,0.07)}
-    .nav-logo{font-size:0.9rem;font-weight:800;letter-spacing:0.3em;text-transform:uppercase;background:linear-gradient(135deg,#4F8EF7,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .wordmark{display:inline-block;font-family:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;font-weight:700;letter-spacing:-0.02em;line-height:1;white-space:nowrap;color:#F8F8FC;text-decoration:none}
+    .wordmark .y{color:#2563EB}
+    .nav-logo{font-size:1.5rem;text-decoration:none}
     .nav-back{display:inline-flex;align-items:center;gap:8px;color:rgba(248,248,252,0.6);font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-decoration:none;transition:color 0.3s ease}
     .nav-back:hover{color:#F8F8FC}
     .nav-back svg{width:16px;height:16px}
@@ -71,7 +73,7 @@
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
       Back to Home
     </a>
-    <a href="/" class="nav-logo" aria-label="WEBYY home"><img src="/assets/webyy-logo.webp" alt="WEBYY logo" height="28" style="height:28px;width:auto;display:block" onerror="this.replaceWith(document.createTextNode('Webyy'))"></a>
+    <a href="/" class="nav-logo wordmark" aria-label="Webyy home">Web<span class="y">yy</span></a>
   </nav>
 
   <main class="main">
@@ -291,8 +293,8 @@
         <p>If you have any questions about these Terms, please contact us:</p>
         <div class="contact-box">
           <div class="contact-item"><div class="contact-dot"></div><span>Email: contact.webyy@gmail.com</span></div>
-          <div class="contact-item"><div class="contact-dot"></div><span>Phone: +91 98765 43210</span></div>
-          <div class="contact-item"><div class="contact-dot"></div><span>WhatsApp: +91 98765 43210</span></div>
+          <div class="contact-item"><div class="contact-dot"></div><span>Phone: +91 91358 88913</span></div>
+          <div class="contact-item"><div class="contact-dot"></div><span>WhatsApp: +91 91358 88913</span></div>
           <div class="contact-item"><div class="contact-dot"></div><span>Instagram: @webyy</span></div>
           <div class="contact-item"><div class="contact-dot"></div><span>Response Time: Within 24 hours</span></div>
         </div>
@@ -311,7 +313,7 @@
   </main>
 
   <footer class="footer">
-    <p>&copy; 2026 <a href="/">Webyy</a> Studio. All rights reserved. Crafted with obsession in India.</p>
+    <p>&copy; 2026 <a href="/" class="wordmark" aria-label="Webyy home" style="font-size:0.85rem;color:#F8F8FC">Web<span class="y">yy</span></a>. All rights reserved. Crafted with obsession in India.</p>
   </footer>
 </body>
 </html>
