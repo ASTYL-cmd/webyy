@@ -169,6 +169,16 @@ export const projects: Project[] = [
     logo: 'https://i.ibb.co/35kYYcrP/HJP-Studio-20261012-105709-0000.png',
     alt: 'HJP Studio photography studio logo',
   },
+  {
+    id: 6,
+    name: 'Aquanivora',
+    category: 'Aquatic Plants & Fish Store',
+    description:
+      'An aquatic brand that breeds and sells fish, and stocks aquatic plants, fish food and pellets for aquarium keepers.',
+    // Local file (public/assets/projects/aquanivora.png): cropped from the client-supplied logo.
+    logo: '/assets/projects/aquanivora.png',
+    alt: 'Aquanivora aquatic plants and fish store logo',
+  },
 ];
 
 export const pricingPlans = [
